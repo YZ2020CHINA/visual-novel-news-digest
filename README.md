@@ -2,6 +2,26 @@
 
 > 每日自动生成复古报纸风格的新闻简报
 
+## 📅 查看日报
+
+### 📰 在线阅读（推荐）
+
+点击日期查看对应的报纸：
+
+- [📰 2026-11-04（最新一期）](https://github.com/YZ2020CHINA/visual-novel-news-digest/raw/main/digests/2026-11-04.html) — 下载后用浏览器打开
+- [📁 查看全部日报存档](https://github.com/YZ2020CHINA/visual-novel-news-digest/tree/main/digests)
+
+> **阅读提示**：
+> - 点击上方"最新一期"链接，会下载 HTML 文件到本地
+> - 用浏览器打开下载的文件，即可查看完整的复古报纸样式
+> - 每天早上 8 点自动更新最新一期
+
+### 💻 本地查看
+
+克隆仓库后，直接用浏览器打开 `digests/` 目录下的 HTML 文件。
+
+---
+
 ## 🎨 特色
 
 - **复古报纸风格**：经典报纸排版，还原纸媒质感
@@ -81,25 +101,6 @@ python news_digest.py
 - **RSS 解析**: feedparser
 - **网页抓取**: BeautifulSoup4
 - **自动化**: GitHub Actions
-
-## 📅 查看日报
-
-### 📰 在线阅读（推荐）
-
-点击日期查看对应的报纸：
-
-- [📰 2026-11-04（在线预览）](https://htmlpreview.github.io/?https://github.com/YZ2020CHINA/visual-novel-news-digest/blob/main/digests/2026-11-04.html)
-- [📁 查看全部日报存档](https://github.com/YZ2020CHINA/visual-novel-news-digest/tree/main/digests)
-
-> **提示**：
-> - 点击上方链接可直接在浏览器中预览完整的报纸样式
-> - 或者点击 [下载 HTML 文件](https://github.com/YZ2020CHINA/visual-novel-news-digest/raw/main/digests/2026-11-04.html)，保存后用浏览器打开获得最佳体验
-
-### 💻 本地查看
-
-每日生成的日报保存在 `digests/` 目录下，文件名格式为 `YYYY-MM-DD.html`。
-
-克隆仓库后，直接用浏览器打开 HTML 文件即可查看完整的复古报纸页面。
 
 ---
 
