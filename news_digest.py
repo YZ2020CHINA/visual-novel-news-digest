@@ -145,6 +145,10 @@ def translate_and_select_top_news(all_news):
         api_key = os.getenv('OPENAI_API_KEY')
         base_url = os.getenv('OPENAI_BASE_URL', 'https://api.openai.com/v1')
 
+    # 智能补全 base_url：如果不以 /v1 结尾，自动补上
+    if base_url and not base_url.endswith('/v1'):
+        base_url = base_url.rstrip('/') + '/v1'
+
     client = OpenAI(
         api_key=api_key,
         base_url=base_url
