@@ -88,10 +88,12 @@ python news_digest.py
 
 点击日期查看对应的报纸：
 
-- [📰 2026-11-04](https://github.com/YZ2020CHINA/visual-novel-news-digest/blob/main/digests/2026-11-04.html) 
+- [📰 2026-11-04（在线预览）](https://htmlpreview.github.io/?https://github.com/YZ2020CHINA/visual-novel-news-digest/blob/main/digests/2026-11-04.html)
 - [📁 查看全部日报存档](https://github.com/YZ2020CHINA/visual-novel-news-digest/tree/main/digests)
 
-> **提示**：点击 GitHub 文件页面右上角的 **"Download"** 按钮下载 HTML 文件，用浏览器打开可以获得最佳阅读体验。
+> **提示**：
+> - 点击上方链接可直接在浏览器中预览完整的报纸样式
+> - 或者点击 [下载 HTML 文件](https://github.com/YZ2020CHINA/visual-novel-news-digest/raw/main/digests/2026-11-04.html)，保存后用浏览器打开获得最佳体验
 
 ### 💻 本地查看
 
