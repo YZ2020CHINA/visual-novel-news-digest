@@ -38,6 +38,10 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add digests/
-          git diff --quiet && git diff --staged --quiet || git commit -m "📰 $(date +'%Y-%m-%d') 视野日报"
-          git push
+          git add digests/*.html
+          if git diff --staged --quiet; then
+            echo "没有新文件需要提交"
+          else
+            git commit -m "📰 $(date +'%Y-%m-%d') 视野日报"
+            git push
+          fi
