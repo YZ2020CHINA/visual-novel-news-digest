@@ -84,9 +84,20 @@ python news_digest.py
 
 ## 📅 查看日报
 
+### 📰 在线阅读（推荐）
+
+点击日期查看对应的报纸：
+
+- [📰 2026-11-04](https://github.com/YZ2020CHINA/visual-novel-news-digest/blob/main/digests/2026-11-04.html) 
+- [📁 查看全部日报存档](https://github.com/YZ2020CHINA/visual-novel-news-digest/tree/main/digests)
+
+> **提示**：点击 GitHub 文件页面右上角的 **"Download"** 按钮下载 HTML 文件，用浏览器打开可以获得最佳阅读体验。
+
+### 💻 本地查看
+
 每日生成的日报保存在 `digests/` 目录下，文件名格式为 `YYYY-MM-DD.html`。
 
-用浏览器打开即可查看完整的复古报纸页面。
+克隆仓库后，直接用浏览器打开 HTML 文件即可查看完整的复古报纸页面。
 
 ---
 
