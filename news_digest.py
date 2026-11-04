@@ -376,34 +376,47 @@ def save_html(html_content):
 
 
 def main():
-    print("[START] 视野日报 - 开始生成...")
-    print("=" * 50)
+    try:
+        print("[START] 视野日报 - 开始生成...")
+        print("=" * 50)
 
-    # 1. 抓取新闻
-    print("[NEWS] 正在抓取新闻...")
-    all_news = fetch_news()
+        # 1. 抓取新闻
+        print("[NEWS] 正在抓取新闻...")
+        all_news = fetch_news()
 
-    total_count = sum(len(items) for items in all_news.values())
-    print(f"[OK] 共获取 {total_count} 条新闻")
+        total_count = sum(len(items) for items in all_news.values())
+        print(f"[OK] 共获取 {total_count} 条新闻")
 
-    if total_count == 0:
-        print("[ERROR] 未获取到新闻")
-        return
+        if total_count == 0:
+            print("[ERROR] 未获取到新闻")
+            sys.exit(1)
 
-    # 2. AI 翻译和选择头版（简化版）
-    print("[AI] AI 分析中（简化模式）...")
-    ai_result = translate_and_select_top_news(all_news)
+        # 2. AI 翻译和选择头版（简化版）
+        print("[AI] AI 分析中（简化模式）...")
+        try:
+            ai_result = translate_and_select_top_news(all_news)
+        except Exception as e:
+            print(f"[ERROR] AI 分析失败: {e}")
+            import traceback
+            traceback.print_exc()
+            sys.exit(1)
 
-    # 3. 生成 HTML
-    print("[HTML] 生成报纸页面...")
-    html_content = generate_html(all_news, ai_result)
+        # 3. 生成 HTML
+        print("[HTML] 生成报纸页面...")
+        html_content = generate_html(all_news, ai_result)
 
-    # 4. 保存文件
-    saved_file = save_html(html_content)
+        # 4. 保存文件
+        saved_file = save_html(html_content)
 
-    print("=" * 50)
-    print("[DONE] 完成！")
-    print(f"[FILE] 文件: {saved_file}")
+        print("=" * 50)
+        print("[DONE] 完成！")
+        print(f"[FILE] 文件: {saved_file}")
+
+    except Exception as e:
+        print(f"[FATAL ERROR] 程序运行出错: {e}")
+        import traceback
+        traceback.print_exc()
+        sys.exit(1)
 
 
 if __name__ == "__main__":
