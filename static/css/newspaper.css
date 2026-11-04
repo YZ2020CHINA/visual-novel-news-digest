@@ -1,0 +1,337 @@
+/* 复古报纸风格样式表 */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Playfair+Display:wght@700;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #e8e3d5;
+    font-family: 'Noto Serif SC', serif;
+    color: #2b2b2b;
+    line-height: 1.8;
+    padding: 20px;
+}
+
+.newspaper {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #f4f1eb;
+    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+    padding: 40px 60px;
+    border: 3px solid #2b2b2b;
+}
+
+/* ========== 报头 ========== */
+
+.masthead {
+    text-align: center;
+    border-bottom: 4px double #2b2b2b;
+    padding-bottom: 30px;
+    margin-bottom: 40px;
+}
+
+.ornament-top,
+.ornament-bottom {
+    height: 2px;
+    background: repeating-linear-gradient(
+        90deg,
+        #2b2b2b 0px,
+        #2b2b2b 10px,
+        transparent 10px,
+        transparent 15px
+    );
+    margin: 15px auto;
+    width: 80%;
+}
+
+.newspaper-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    margin: 20px 0 10px;
+    text-transform: uppercase;
+    color: #1a1a1a;
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+}
+
+.subtitle {
+    font-family: 'Times New Roman', serif;
+    font-size: 1rem;
+    letter-spacing: 0.3em;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.header-info {
+    font-size: 0.95rem;
+    color: #444;
+    margin-top: 15px;
+}
+
+.header-info .divider {
+    margin: 0 15px;
+    color: #999;
+}
+
+.date {
+    font-weight: 600;
+}
+
+.issue {
+    font-style: italic;
+}
+
+/* ========== 头版新闻目录 ========== */
+
+.headline-section {
+    margin-bottom: 50px;
+    border: 2px solid #2b2b2b;
+    padding: 30px;
+    background: #fff;
+}
+
+.top-story-index h2 {
+    font-size: 2.5rem;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #1a1a1a;
+    font-family: 'Playfair Display', serif;
+    border-bottom: 3px solid #2b2b2b;
+    padding-bottom: 15px;
+}
+
+.index-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.index-section {
+    background: #f9f8f5;
+    padding: 20px;
+    border-left: 4px solid #2b2b2b;
+}
+
+.index-section h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.index-section h3 a {
+    color: #1a1a1a;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.index-section h3 a:hover {
+    color: #666;
+}
+
+.index-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.index-section li {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 10px;
+    padding-left: 15px;
+    position: relative;
+    color: #333;
+}
+
+.index-section li:before {
+    content: "▸";
+    position: absolute;
+    left: 0;
+    color: #2b2b2b;
+    font-weight: 700;
+}
+
+/* ========== 内容分栏（改为网格布局） ========== */
+
+.content-columns {
+    margin-top: 40px;
+}
+
+.section {
+    margin-bottom: 50px;
+    scroll-margin-top: 100px;
+}
+
+.section-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #2b2b2b;
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+    color: #1a1a1a;
+    letter-spacing: 0.05em;
+}
+
+.section-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 30px;
+}
+
+.news-item {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid #ddd;
+    overflow: hidden;
+    transition: box-shadow 0.3s;
+}
+
+.news-item:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.news-item img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-bottom: 1px solid #ddd;
+}
+
+.news-content {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.news-content h4 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    line-height: 1.4;
+    color: #1a1a1a;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.news-content p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    color: #444;
+    text-align: justify;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    flex-grow: 1;
+}
+
+.news-content a {
+    color: #2b2b2b;
+    text-decoration: underline;
+    font-weight: 600;
+    font-size: 0.9rem;
+    align-self: flex-start;
+}
+
+.news-content a:hover {
+    color: #666;
+}
+
+/* ========== 版尾 ========== */
+
+.newspaper-footer {
+    margin-top: 60px;
+    padding-top: 30px;
+    border-top: 4px double #2b2b2b;
+}
+
+.ornament-divider {
+    height: 2px;
+    background: #2b2b2b;
+    margin: 20px auto 30px;
+    width: 60%;
+}
+
+.celebrity-birthday {
+    background: #fff;
+    border: 2px solid #2b2b2b;
+    padding: 25px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.celebrity-birthday h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #1a1a1a;
+}
+
+.celebrity-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #2b2b2b;
+}
+
+.celebrity-story {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #444;
+    text-align: justify;
+}
+
+.footer-note {
+    text-align: center;
+    font-size: 0.85rem;
+    color: #999;
+    font-style: italic;
+}
+
+/* ========== 响应式设计 ========== */
+
+@media (max-width: 1600px) {
+    .section-grid {
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    }
+}
+
+@media (max-width: 1200px) {
+    .section-grid {
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .newspaper {
+        padding: 20px 30px;
+    }
+
+    .newspaper-title {
+        font-size: 3rem;
+    }
+
+    .section-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .index-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .news-item img {
+        height: 200px;
+    }
+}

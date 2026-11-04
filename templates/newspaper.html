@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视野日报 - {{DATE}}</title>
+    <link rel="stylesheet" href="../static/css/newspaper.css">
+</head>
+<body>
+    <div class="newspaper">
+        <!-- 报头 -->
+        <header class="masthead">
+            <div class="ornament-top"></div>
+            <h1 class="newspaper-title">视野日报</h1>
+            <div class="subtitle">THE VISION DAILY</div>
+            <div class="header-info">
+                <span class="date">{{DATE}}</span>
+                <span class="divider">|</span>
+                <span class="issue">第 {{ISSUE_NUMBER}} 期</span>
+            </div>
+            <div class="ornament-bottom"></div>
+        </header>
+
+        <!-- 头版重点新闻 -->
+        <section class="headline-section">
+            {{TOP_STORY}}
+        </section>
+
+        <!-- 分栏内容 -->
+        <main class="content-columns">
+            {{SECTIONS}}
+        </main>
+
+        <!-- 版尾 - 名人生日 -->
+        <footer class="newspaper-footer">
+            <div class="ornament-divider"></div>
+            <div class="celebrity-birthday">
+                <h3>📅 今日诞辰</h3>
+                <p class="celebrity-name">{{CELEBRITY_NAME}}</p>
+                <p class="celebrity-story">{{CELEBRITY_STORY}}</p>
+            </div>
+            <div class="footer-note">
+                <p>视野日报 · 由 AI 自动生成 · 每日更新</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
