@@ -278,6 +278,17 @@ def generate_html(all_news, ai_result):
     with open(template_path, 'r', encoding='utf-8') as f:
         template = f.read()
 
+    # 读取 CSS 文件并内嵌到 HTML 中
+    css_path = os.path.join(os.path.dirname(__file__), 'static', 'css', 'newspaper.css')
+    with open(css_path, 'r', encoding='utf-8') as f:
+        css_content = f.read()
+
+    # 替换外部 CSS 链接为内嵌 style 标签
+    template = template.replace(
+        '<link rel="stylesheet" href="../static/css/newspaper.css">',
+        f'<style>\n{css_content}\n    </style>'
+    )
+
     # 准备头版：所有板块的标题目录
     top_story_html = '<div class="top-story-index"><h2>今日要闻</h2><div class="index-grid">'
 
