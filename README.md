@@ -6,16 +6,16 @@
 
 ### 📰 在线阅读（推荐）
 
-点击日期查看对应的报纸：
+**点击直接查看最新一期报纸：**
 
-- [📰 2026-11-04（最新一期）](https://github.com/YZ2020CHINA/visual-novel-news-digest/blob/main/digests/2026-11-04.html?raw=true) — 点击右上角 "Download" 按钮下载
-- [📁 查看全部日报存档](https://github.com/YZ2020CHINA/visual-novel-news-digest/tree/main/digests)
+🔗 **https://yz2020china.github.io/visual-novel-news-digest/**
 
-> **阅读提示**：
-> 1. 点击上方"最新一期"链接，进入 GitHub 文件页面
-> 2. 点击页面右上角的 **"Download"** 或 **"···"** 按钮下载 HTML 文件
-> 3. 用浏览器打开下载的文件，即可查看完整的复古报纸样式
-> 4. 每天早上 8 点自动更新最新一期
+每天早上 8 点自动更新，打开链接即可在浏览器中查看完整的复古报纸样式。
+
+### 📁 历史存档
+
+- [查看全部日报存档](https://github.com/YZ2020CHINA/visual-novel-news-digest/tree/main/digests)
+- [下载最新一期 HTML](https://github.com/YZ2020CHINA/visual-novel-news-digest/raw/main/digests/2026-11-04.html)
 
 ### 💻 本地查看
 
