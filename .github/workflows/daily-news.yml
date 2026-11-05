@@ -27,8 +27,8 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: 测试照片效果和最新一期入口
-        run: python -m unittest test_newsprint test_latest_digest -v
+      - name: 测试照片效果、排版和最新一期入口
+        run: python -m unittest test_newsprint test_latest_digest test_layout -v
 
       - name: 生成视野日报
         env:

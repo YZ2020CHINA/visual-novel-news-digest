@@ -63,6 +63,14 @@ NEWS_SOURCES = {
 
 # ============= 工具函数 =============
 
+def plain_text(value):
+    """Remove feed/translation markup before truncating or escaping for HTML."""
+    soup = BeautifulSoup(str(value or ''), 'html.parser')
+    for element in soup(['script', 'style', 'template']):
+        element.decompose()
+    return ' '.join(soup.get_text(' ', strip=True).split())
+
+
 def extract_image_from_url(url):
     """从网页中提取主图"""
     try:
@@ -105,9 +113,10 @@ def fetch_news():
                 feed = feedparser.parse(feed_url)
                 for entry in feed.entries[:5]:  # 每个源取 5 条
                     news_item = {
-                        'title': entry.title,
+                        'title': plain_text(entry.title),
                         'link': entry.link,
-                        'summary': entry.get('summary', entry.get('description', ''))[:800],  # 增加摘要长度
+                        'summary': plain_text(entry.get('summary', entry.get('description', '')))[:800],
+                        '_text_is_plain': True,
                         'published': entry.get('published', ''),
                         'image': extract_image_from_url(entry.link),  # 提取图片
                     }
@@ -246,8 +255,9 @@ def translate_and_select_top_news(all_news):
 
                     translations[category].append({
                         "index": batch_start + i,
-                        "title_cn": title_match.group(1).strip() if title_match else item['title'],
-                        "summary_cn": summary_match.group(1).strip() if summary_match else item['summary'][:200]
+                        "title_cn": plain_text(title_match.group(1)) if title_match else (item['title'] if item.get('_text_is_plain') else plain_text(item['title'])),
+                        "summary_cn": plain_text(summary_match.group(1)) if summary_match else (item['summary'] if item.get('_text_is_plain') else plain_text(item['summary']))[:200],
+                        "_text_is_plain": True,
                     })
 
                 print(f"[AI] {category} 批次 {batch_start//batch_size + 1} 翻译完成")
@@ -258,8 +268,9 @@ def translate_and_select_top_news(all_news):
                 for i, item in enumerate(batch):
                     translations[category].append({
                         "index": batch_start + i,
-                        "title_cn": item['title'],
-                        "summary_cn": item['summary'][:200]
+                        "title_cn": item['title'] if item.get('_text_is_plain') else plain_text(item['title']),
+                        "summary_cn": (item['summary'] if item.get('_text_is_plain') else plain_text(item['summary']))[:200],
+                        "_text_is_plain": True,
                     })
 
     return {
@@ -306,20 +317,20 @@ def generate_html(all_news, ai_result):
         top_3_titles = []
         for idx in range(min(3, len(items))):
             item = items[idx]
-            title_cn = item['title'][:50]  # 限制长度
+            title_cn = item['title'] if item.get('_text_is_plain') else plain_text(item['title'])
 
             # 尝试获取中文翻译
             if ai_result and 'translations' in ai_result and category in ai_result['translations']:
                 for trans in ai_result['translations'][category]:
                     if trans['index'] == idx:
-                        title_cn = trans['title_cn'][:50]  # 限制长度
+                        title_cn = trans['title_cn'] if trans.get('_text_is_plain') else plain_text(trans['title_cn'])
                         break
 
-            top_3_titles.append(f'<li>{title_cn}</li>')
+            top_3_titles.append(f'<li>{escape(title_cn[:50])}</li>')
 
         top_story_html += f'''
         <div class="index-section">
-            <h3><a href="#{category_id}">{category}</a></h3>
+            <h3><a href="#{escape(category_id, quote=True)}">{escape(category)}</a></h3>
             <ul>
                 {''.join(top_3_titles)}
             </ul>
@@ -338,18 +349,18 @@ def generate_html(all_news, ai_result):
         # 板块锚点ID
         category_id = category.replace(' ', '-').replace('与', '-')
 
-        sections_html += f'<div class="section" id="{category_id}"><h3 class="section-title">{category}</h3><div class="section-grid">'
+        sections_html += f'<div class="section" id="{escape(category_id, quote=True)}"><h3 class="section-title">{escape(category)}</h3><div class="section-grid">'
 
         for idx, item in enumerate(items):
             # 使用中文翻译
-            title_cn = item['title']
-            summary_cn = item['summary'][:200]
+            title_cn = item['title'] if item.get('_text_is_plain') else plain_text(item['title'])
+            summary_cn = (item['summary'] if item.get('_text_is_plain') else plain_text(item['summary']))[:200]
 
             if ai_result and 'translations' in ai_result and category in ai_result['translations']:
                 for trans in ai_result['translations'][category]:
                     if trans['index'] == idx:
-                        title_cn = trans['title_cn']
-                        summary_cn = trans['summary_cn']
+                        title_cn = trans['title_cn'] if trans.get('_text_is_plain') else plain_text(trans['title_cn'])
+                        summary_cn = trans['summary_cn'] if trans.get('_text_is_plain') else plain_text(trans['summary_cn'])
                         break
 
             image_url = item['image']
@@ -362,9 +373,9 @@ def generate_html(all_news, ai_result):
             <div class="news-item">
                 <img{image_class} src="{escape(image_src, quote=True)}" alt="{escape(title_cn, quote=True)}">
                 <div class="news-content">
-                    <h4>{title_cn}</h4>
-                    <p>{summary_cn}</p>
-                    <a href="{item['link']}" target="_blank">详细阅读 →</a>
+                    <h4>{escape(title_cn)}</h4>
+                    <p>{escape(summary_cn)}</p>
+                    <a href="{escape(item['link'], quote=True)}" target="_blank" rel="noopener noreferrer">详细阅读 →</a>
                 </div>
             </div>
             """

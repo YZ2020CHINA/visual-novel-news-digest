@@ -2,6 +2,10 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Playfair+Display:wght@700;900&display=swap');
 
+:root {
+    --paper-color: #f4f1eb;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -19,7 +23,7 @@ body {
 .newspaper {
     max-width: 1200px;
     margin: 0 auto;
-    background: #f4f1eb;
+    background: var(--paper-color);
     box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
     padding: 40px 60px;
     border: 3px solid #2b2b2b;
@@ -92,7 +96,7 @@ body {
     margin-bottom: 50px;
     border: 2px solid #2b2b2b;
     padding: 30px;
-    background: #fff;
+    background: var(--paper-color);
 }
 
 .top-story-index h2 {
@@ -108,11 +112,13 @@ body {
 
 .index-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
     gap: 30px;
 }
 
 .index-section {
+    min-width: 0;
+    overflow-wrap: anywhere;
     background: #f9f8f5;
     padding: 20px;
     border-left: 4px solid #2b2b2b;
@@ -180,14 +186,15 @@ body {
 
 .section-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
     gap: 30px;
 }
 
 .news-item {
+    min-width: 0;
     display: flex;
     flex-direction: column;
-    background: #fff;
+    background: var(--paper-color);
     border: 1px solid #ddd;
     overflow: hidden;
     transition: box-shadow 0.3s;
@@ -198,6 +205,9 @@ body {
 }
 
 .news-item img {
+    display: block;
+    flex-shrink: 0;
+    background: var(--paper-color);
     width: 100%;
     height: 250px;
     object-fit: cover;
@@ -206,10 +216,13 @@ body {
 
 .news-item img.newsprint-photo {
     object-fit: contain;
-    background: #f4f1eb;
+    background: var(--paper-color);
 }
 
 .news-content {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    background: var(--paper-color);
     padding: 20px;
     flex-grow: 1;
     display: flex;
@@ -240,10 +253,10 @@ body {
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
-    flex-grow: 1;
 }
 
 .news-content a {
+    margin-top: auto;
     color: #2b2b2b;
     text-decoration: underline;
     font-weight: 600;
@@ -307,21 +320,13 @@ body {
 
 /* ========== 响应式设计 ========== */
 
-@media (max-width: 1600px) {
-    .section-grid {
-        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    }
-}
-
-@media (max-width: 1200px) {
-    .section-grid {
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    }
-}
-
 @media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
     .newspaper {
-        padding: 20px 30px;
+        padding: 20px;
     }
 
     .newspaper-title {
@@ -338,5 +343,9 @@ body {
 
     .news-item img {
         height: 200px;
+    }
+
+    .headline-section {
+        padding: 20px;
     }
 }
