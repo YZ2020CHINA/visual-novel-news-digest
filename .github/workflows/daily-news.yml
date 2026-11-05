@@ -27,8 +27,8 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: 测试彩色报纸印刷照片
-        run: python -m unittest test_newsprint -v
+      - name: 测试照片效果和最新一期入口
+        run: python -m unittest test_newsprint test_latest_digest -v
 
       - name: 生成视野日报
         env:

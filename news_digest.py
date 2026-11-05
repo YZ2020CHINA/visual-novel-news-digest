@@ -15,6 +15,7 @@ from openai import OpenAI
 import requests
 from bs4 import BeautifulSoup
 import random
+import shutil
 from newsprint import convert_image_url
 from html import escape
 
@@ -390,6 +391,13 @@ def save_html(html_content):
     filename = os.path.join(output_dir, f'{today}.html')
     with open(filename, 'w', encoding='utf-8') as f:
         f.write(html_content)
+
+    # Keep a stable, complete edition for both online reading and download.
+    # A backfilled older archive must not replace a newer published issue.
+    dated_files = [name for name in os.listdir(output_dir)
+                   if re.fullmatch(r'\d{4}-\d{2}-\d{2}\.html', name)]
+    latest_archive = os.path.join(output_dir, max(dated_files))
+    shutil.copyfile(latest_archive, os.path.join(output_dir, 'latest.html'))
 
     print(f"[OK] 已保存到: {filename}")
     return filename

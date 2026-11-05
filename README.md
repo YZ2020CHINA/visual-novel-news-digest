@@ -8,14 +8,16 @@
 
 **点击直接查看最新一期报纸：**
 
-🔗 **https://yz2020china.github.io/visual-novel-news-digest/**
+🔗 **[阅读最新一期报纸](https://yz2020china.github.io/visual-novel-news-digest/digests/latest.html)**
 
-每天早上 8 点自动更新，打开链接即可在浏览器中查看完整的复古报纸样式。
+每天北京时间早上 8 点启动自动生成任务；生成成功后，这个固定链接会指向最新一期。生成失败时保留上一期，打开即可查看完整的复古报纸样式。
 
 ### 📁 历史存档
 
 - [查看全部日报存档](https://github.com/YZ2020CHINA/visual-novel-news-digest/tree/main/digests)
-- [下载最新一期 HTML](https://github.com/YZ2020CHINA/visual-novel-news-digest/raw/main/digests/2026-11-04.html)
+- [下载最新一期 HTML](https://github.com/YZ2020CHINA/visual-novel-news-digest/raw/main/digests/latest.html)
+
+阅读和下载链接均随新一期日报生成自动更新，无需手动修改日期；历史日报仍按日期保存。
 
 ### 💻 本地查看
 

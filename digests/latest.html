@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视野日报 - 2026年11月05日</title>
+    <style>
+/* 复古报纸风格样式表 */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Playfair+Display:wght@700;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #e8e3d5;
+    font-family: 'Noto Serif SC', serif;
+    color: #2b2b2b;
+    line-height: 1.8;
+    padding: 20px;
+}
+
+.newspaper {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #f4f1eb;
+    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+    padding: 40px 60px;
+    border: 3px solid #2b2b2b;
+}
+
+/* ========== 报头 ========== */
+
+.masthead {
+    text-align: center;
+    border-bottom: 4px double #2b2b2b;
+    padding-bottom: 30px;
+    margin-bottom: 40px;
+}
+
+.ornament-top,
+.ornament-bottom {
+    height: 2px;
+    background: repeating-linear-gradient(
+        90deg,
+        #2b2b2b 0px,
+        #2b2b2b 10px,
+        transparent 10px,
+        transparent 15px
+    );
+    margin: 15px auto;
+    width: 80%;
+}
+
+.newspaper-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    margin: 20px 0 10px;
+    text-transform: uppercase;
+    color: #1a1a1a;
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+}
+
+.subtitle {
+    font-family: 'Times New Roman', serif;
+    font-size: 1rem;
+    letter-spacing: 0.3em;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.header-info {
+    font-size: 0.95rem;
+    color: #444;
+    margin-top: 15px;
+}
+
+.header-info .divider {
+    margin: 0 15px;
+    color: #999;
+}
+
+.date {
+    font-weight: 600;
+}
+
+.issue {
+    font-style: italic;
+}
+
+/* ========== 头版新闻目录 ========== */
+
+.headline-section {
+    margin-bottom: 50px;
+    border: 2px solid #2b2b2b;
+    padding: 30px;
+    background: #fff;
+}
+
+.top-story-index h2 {
+    font-size: 2.5rem;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #1a1a1a;
+    font-family: 'Playfair Display', serif;
+    border-bottom: 3px solid #2b2b2b;
+    padding-bottom: 15px;
+}
+
+.index-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.index-section {
+    background: #f9f8f5;
+    padding: 20px;
+    border-left: 4px solid #2b2b2b;
+}
+
+.index-section h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.index-section h3 a {
+    color: #1a1a1a;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.index-section h3 a:hover {
+    color: #666;
+}
+
+.index-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.index-section li {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 10px;
+    padding-left: 15px;
+    position: relative;
+    color: #333;
+}
+
+.index-section li:before {
+    content: "▸";
+    position: absolute;
+    left: 0;
+    color: #2b2b2b;
+    font-weight: 700;
+}
+
+/* ========== 内容分栏（改为网格布局） ========== */
+
+.content-columns {
+    margin-top: 40px;
+}
+
+.section {
+    margin-bottom: 50px;
+    scroll-margin-top: 100px;
+}
+
+.section-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-bottom: 3px solid #2b2b2b;
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+    color: #1a1a1a;
+    letter-spacing: 0.05em;
+}
+
+.section-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 30px;
+}
+
+.news-item {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid #ddd;
+    overflow: hidden;
+    transition: box-shadow 0.3s;
+}
+
+.news-item:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.news-item img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-bottom: 1px solid #ddd;
+}
+
+.news-content {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.news-content h4 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    line-height: 1.4;
+    color: #1a1a1a;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.news-content p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    color: #444;
+    text-align: justify;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    flex-grow: 1;
+}
+
+.news-content a {
+    color: #2b2b2b;
+    text-decoration: underline;
+    font-weight: 600;
+    font-size: 0.9rem;
+    align-self: flex-start;
+}
+
+.news-content a:hover {
+    color: #666;
+}
+
+/* ========== 版尾 ========== */
+
+.newspaper-footer {
+    margin-top: 60px;
+    padding-top: 30px;
+    border-top: 4px double #2b2b2b;
+}
+
+.ornament-divider {
+    height: 2px;
+    background: #2b2b2b;
+    margin: 20px auto 30px;
+    width: 60%;
+}
+
+.celebrity-birthday {
+    background: #fff;
+    border: 2px solid #2b2b2b;
+    padding: 25px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.celebrity-birthday h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #1a1a1a;
+}
+
+.celebrity-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #2b2b2b;
+}
+
+.celebrity-story {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #444;
+    text-align: justify;
+}
+
+.footer-note {
+    text-align: center;
+    font-size: 0.85rem;
+    color: #999;
+    font-style: italic;
+}
+
+/* ========== 响应式设计 ========== */
+
+@media (max-width: 1600px) {
+    .section-grid {
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    }
+}
+
+@media (max-width: 1200px) {
+    .section-grid {
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .newspaper {
+        padding: 20px 30px;
+    }
+
+    .newspaper-title {
+        font-size: 3rem;
+    }
+
+    .section-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .index-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .news-item img {
+        height: 200px;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div class="newspaper">
+        <!-- 报头 -->
+        <header class="masthead">
+            <div class="ornament-top"></div>
+            <h1 class="newspaper-title">视野日报</h1>
+            <div class="subtitle">THE VISION DAILY</div>
+            <div class="header-info">
+                <span class="date">2026年11月05日</span>
+                <span class="divider">|</span>
+                <span class="issue">第 5 期</span>
+            </div>
+            <div class="ornament-bottom"></div>
+        </header>
+
+        <!-- 头版重点新闻 -->
+        <section class="headline-section">
+            <div class="top-story-index"><h2>今日要闻</h2><div class="index-grid">
+        <div class="index-section">
+            <h3><a href="#独立游戏-视觉小说">独立游戏与视觉小说</a></h3>
+            <ul>
+                <li>《坏喜鹊》：解谜寻宝</li><li>《整理方舟》：动物各有归处</li><li>《Showrunners》：在大型赛道上轮滑飞驰！</li>
+            </ul>
+        </div>
+        
+        <div class="index-section">
+            <h3><a href="#AI-科技">AI与科技</a></h3>
+            <ul>
+                <li>德州曾是人工智能数据中心建设中心，如今或将退潮</li><li>圆桌讨论：探寻认知永生之路</li><li>中期选举后，美国能源政策将走向何方？</li>
+            </ul>
+        </div>
+        
+        <div class="index-section">
+            <h3><a href="#文化艺术">文化艺术</a></h3>
+            <ul>
+                <li>中期选举民主党获胜后，特朗普着力推介宴会厅</li><li>安德烈娅·鲍尔斯在桑德雷托·雷·雷鲍登戈基金会致敬上世纪80年代气候行动者</li><li>考尔德为家人制作的五件珠宝将于邦瀚斯拍卖，估价30万美元</li>
+            </ul>
+        </div>
+        
+        <div class="index-section">
+            <h3><a href="#社会-文化">社会与文化</a></h3>
+            <ul>
+                <li>特朗普如何把一手好牌打得稀烂</li><li>美国选民为何拒绝特朗普领导的共和党</li><li>共和党惨败之夜：中期选举八大看点</li>
+            </ul>
+        </div>
+        
+        <div class="index-section">
+            <h3><a href="#宗教-意识形态">宗教与意识形态</a></h3>
+            <ul>
+                <li>民主党州长占多数，政治影响或将扩散</li><li>MAGA运动还有未来吗？期中选举反特朗普反弹后，前景未明</li><li>美国选民转向民主党，世界如何重新评估美国</li>
+            </ul>
+        </div>
+        </div></div>
+        </section>
+
+        <!-- 分栏内容 -->
+        <main class="content-columns">
+            <div class="section" id="独立游戏-视觉小说"><h3 class="section-title">独立游戏与视觉小说</h3><div class="section-grid">
+            <div class="news-item">
+                <img src="https://s3-igpbucket.s3.eu-west-2.amazonaws.com/wp-content/uploads/2026/08/29192523/swimming-over-a-pond-in-Bad-Magpie.jpg" alt="《坏喜鹊》：解谜寻宝">
+                <div class="news-content">
+                    <h4>《坏喜鹊》：解谜寻宝</h4>
+                    <p>你将扮演一只翅膀受伤的小喜鹊。世界对你不公，你将奋起反击……</p>
+                    <a href="https://indiegamesplus.com/bad-magpie-preview/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://s3-igpbucket.s3.eu-west-2.amazonaws.com/wp-content/uploads/2026/10/21121330/Loads-of-animals-in-Tidy-Up-the-Ark.jpg" alt="《整理方舟》：动物各有归处">
+                <div class="news-content">
+                    <h4>《整理方舟》：动物各有归处</h4>
+                    <p>诺亚方舟明明是每种动物各两只，不是20只！不过数量多似乎也不成问题……</p>
+                    <a href="https://indiegamesplus.com/tidy-up-the-ark-preview/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://s3-igpbucket.s3.eu-west-2.amazonaws.com/wp-content/uploads/2026/10/24215049/Showrunner-on-one-of-the-first-tracks.jpg" alt="《Showrunners》：在大型赛道上轮滑飞驰！">
+                <div class="news-content">
+                    <h4>《Showrunners》：在大型赛道上轮滑飞驰！</h4>
+                    <p>这是一款节奏飞快的轮滑竞速游戏，你要不断加速、完成特技，并掌握移动技巧……</p>
+                    <a href="https://indiegamesplus.com/showrunners-preview/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://s3-igpbucket.s3.eu-west-2.amazonaws.com/wp-content/uploads/2026/10/24204441/Ghost-Train-in-Fangtopia.jpg" alt="《Fangtopia》：打造专属世界">
+                <div class="news-content">
+                    <h4>《Fangtopia》：打造专属世界</h4>
+                    <p>这是一款轻松又带有诡异氛围的解谜游戏，玩家通过摆放六边形拼块，为鬼魂、怪物和妖灵创造世界。</p>
+                    <a href="https://indiegamesplus.com/fangtopia-review/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://s3-igpbucket.s3.eu-west-2.amazonaws.com/wp-content/uploads/2026/09/26102259/Some-of-the-day-jobs-in-Influencer-Solitaire.jpg" alt="《Influencer Solitaire》：掷骰走红">
+                <div class="news-content">
+                    <h4>《Influencer Solitaire》：掷骰走红</h4>
+                    <p>要是当网红只需掷骰子并把骰子放到卡牌上就好了！这正是游戏中可以做的事……</p>
+                    <a href="https://indiegamesplus.com/influencer-solitaire-preview/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://via.placeholder.com/800x600/f4f1eb/333333?text=视野日报" alt="每周问答与推荐帖：需要帮忙吗？（10月31日）">
+                <div class="news-content">
+                    <h4>每周问答与推荐帖：需要帮忙吗？（10月31日）</h4>
+                    <p>视觉小说社区每周问答与推荐集中帖，欢迎来提问、交流和寻求推荐。</p>
+                    <a href="https://www.reddit.com/r/visualnovels/comments/1xkcfp2/weekly_questions_and_recommendations_megathread/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://via.placeholder.com/800x600/f4f1eb/333333?text=视野日报" alt="你最近在读什么？（11月4日）">
+                <div class="news-content">
+                    <h4>你最近在读什么？（11月4日）</h4>
+                    <p>每周“你在读什么？”讨论帖，邀请大家分享近期阅读内容。</p>
+                    <a href="https://www.reddit.com/r/visualnovels/comments/1xnwoaj/what_are_you_reading_nov_4/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://via.placeholder.com/800x600/f4f1eb/333333?text=视野日报" alt="《Kanon》是最佳冬季视觉小说吗？我刚开始玩……">
+                <div class="news-content">
+                    <h4>《Kanon》是最佳冬季视觉小说吗？我刚开始玩……</h4>
+                    <p>发帖者刚开始首次游玩《Kanon》，并询问它是否是最好的冬季视觉小说。</p>
+                    <a href="https://www.reddit.com/r/visualnovels/comments/1xni3ii/is_kanon_the_best_winter_vn_i_just_started_it_for/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://via.placeholder.com/800x600/f4f1eb/333333?text=视野日报" alt="有没有哪部《兰斯》作品里有人肛了他？？？">
+                <div class="news-content">
+                    <h4>有没有哪部《兰斯》作品里有人肛了他？？？</h4>
+                    <p>发帖者称兰斯臀部又大又圆，直言想把他肛了，并表示谁也拦不住。</p>
+                    <a href="https://www.reddit.com/r/visualnovels/comments/1xneme8/is_there_any_rance_game_where_someone_fucks_him/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://via.placeholder.com/800x600/f4f1eb/333333?text=视野日报" alt="你多久和二次元女孩打篮球？来玩这款视觉小说！">
+                <div class="news-content">
+                    <h4>你多久和二次元女孩打篮球？来玩这款视觉小说！</h4>
+                    <p>介绍视觉小说《二次元女孩如何流落西伯利亚！》，并以“你多久和二次元女孩打篮球？”为引子。</p>
+                    <a href="https://www.reddit.com/r/visualnovels/comments/1xnuheu/how_often_do_you_play_basketball_with_2d_girls/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            </div></div><div class="section" id="AI-科技"><h3 class="section-title">AI与科技</h3><div class="section-grid">
+            <div class="news-item">
+                <img src="https://wp.technologyreview.com/wp-content/uploads/2026/11/GettyImages-2303431102.jpg?resize=1200,600" alt="德州曾是人工智能数据中心建设中心，如今或将退潮">
+                <div class="news-content">
+                    <h4>德州曾是人工智能数据中心建设中心，如今或将退潮</h4>
+                    <p>德州是美国增长最快的数据中心市场，也是大型科技公司大规模建设人工智能设施的核心地带。但席卷而来的蓝色浪潮……</p>
+                    <a href="https://www.technologyreview.com/2026/11/04/1148043/texas-was-the-new-epicenter-of-the-ai-data-center-buildout-that-might-be-kaput/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://wp.technologyreview.com/wp-content/uploads/2026/11/MITTR-Roundtables-Nov26-With-border.png?resize=1200,600" alt="圆桌讨论：探寻认知永生之路">
+                <div class="news-content">
+                    <h4>圆桌讨论：探寻认知永生之路</h4>
+                    <p>2026年11月17日，部分前瞻性技术专家正设法延续自我意识，追寻难以企及的自我连续性……</p>
+                    <a href="https://www.technologyreview.com/2026/11/04/1148049/roundtables-inside-the-quest-for-cognitive-immortality/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://wp.technologyreview.com/wp-content/uploads/2026/11/AP26306547843391.jpg?resize=1200,600" alt="中期选举后，美国能源政策将走向何方？">
+                <div class="news-content">
+                    <h4>中期选举后，美国能源政策将走向何方？</h4>
+                    <p>昨晚中期选举结果陆续出炉后，我一直关注各类屏幕。很快，最初的迹象便显现出来……</p>
+                    <a href="https://www.technologyreview.com/2026/11/04/1148022/us-energy-midterm/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://wp.technologyreview.com/wp-content/uploads/2026/10/MUSH_FOODS_LIFESTYLE_014.jpg?resize=1200,600" alt="下载：混合肉、视力恢复与智能体网络">
+                <div class="news-content">
+                    <h4>下载：混合肉、视力恢复与智能体网络</h4>
+                    <p>这是今天的《下载》，我们的工作日日报，为你每日梳理科技领域的最新动态。</p>
+                    <a href="https://www.technologyreview.com/2026/11/04/1148001/the-download-blended-meat-sight-restoring-implant-agentic-web/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://wp.technologyreview.com/wp-content/uploads/2026/10/MITTR2026_CyberhavenV1COV1200SocialCards.png?resize=1200,600" alt="以数据溯源保障智能体企业安全">
+                <div class="news-content">
+                    <h4>以数据溯源保障智能体企业安全</h4>
+                    <p>销售代表向人工智能智能体询问客户定价，智能体从多个来源调取数据，包括受限定价系统和内部沟通记录……</p>
+                    <a href="https://www.technologyreview.com/2026/11/04/1147596/securing-the-agentic-enterprise-with-data-lineage/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://techcrunch.com/wp-content/uploads/2026/06/iphone-usb-cable.jpg?resize=1200,800" alt="据报苹果正削减内部人工智能预算">
+                <div class="news-content">
+                    <h4>据报苹果正削减内部人工智能预算</h4>
+                    <p>据称，苹果正大幅减少工程团队在人工智能方面的支出。</p>
+                    <a href="https://techcrunch.com/2026/11/04/apple-is-reportedly-cutting-budgets-for-its-internal-ai-usage/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://techcrunch.com/wp-content/uploads/2025/11/us-congress-at-night.jpg?resize=1200,677" alt="中期选举后，数据中心或将引发更大冲突">
+                <div class="news-content">
+                    <h4>中期选举后，数据中心或将引发更大冲突</h4>
+                    <p>在周二的中期选举中，反对数据中心的声音跨越了党派界限。</p>
+                    <a href="https://techcrunch.com/2026/11/04/after-the-midterms-a-bigger-clash-over-data-centers-could-be-coming/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://techcrunch.com/wp-content/uploads/2026/11/GettyImages-2264644532.jpg?resize=1200,800" alt="人工智能政治行动委员会斥资影响国会，结果如何？">
+                <div class="news-content">
+                    <h4>人工智能政治行动委员会斥资影响国会，结果如何？</h4>
+                    <p>人工智能行业政治行动委员会投入数百万美元影响2026年中期选举，结果喜忧参半；各政治团体已开始关注下一轮选举。</p>
+                    <a href="https://techcrunch.com/2026/11/04/ai-pacs-spent-millions-trying-to-shape-congress-heres-how-they-fared/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://techcrunch.com/wp-content/uploads/2024/02/2560x2040_5fe778b6-8919-4143-bf11-8d86af754f52_2192x.webp?resize=1200,956" alt="Nothing CEO称神秘的人工智能优先设备将于下月发布">
+                <div class="news-content">
+                    <h4>Nothing CEO称神秘的人工智能优先设备将于下月发布</h4>
+                    <p>这家智能手机初创公司将推出何种产品尚不明确，但其 CEO 表示，该产品旨在利用人工智能……</p>
+                    <a href="https://techcrunch.com/2026/11/04/nothing-ceo-says-companys-mysterious-ai-first-device-is-dropping-next-month/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://techcrunch.com/wp-content/uploads/2026/07/uber-getty.jpg?resize=1200,800" alt="Uber称几乎没人用人工智能智能体叫车">
+                <div class="news-content">
+                    <h4>Uber称几乎没人用人工智能智能体叫车</h4>
+                    <p>Uber表示，在上季度最繁忙的一周里，只有4人通过人工智能智能体预订了行程。</p>
+                    <a href="https://techcrunch.com/2026/11/04/almost-no-one-uses-ai-agents-to-book-their-uber-company-says/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://platform.theverge.com/wp-content/uploads/sites/2/2025/07/STK160_X_TWITTER_2__A.jpg?quality=90&strip=all&crop=0%2C10.732984293194%2C100%2C78.534031413613&w=1200" alt="X称新版网页应用速度大幅提升">
+                <div class="news-content">
+                    <h4>X称新版网页应用速度大幅提升</h4>
+                    <p>X推出新版网页应用，称其速度远超以往，并正按“一个国家接一个国家”的方式逐步上线</p>
+                    <a href="https://www.theverge.com/tech/1027113/x-says-its-updated-web-app-is-way-faster" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://platform.theverge.com/wp-content/uploads/sites/2/chorus/uploads/chorus_asset/file/24007992/acastro_STK082_qualcomm_02.jpg?quality=90&strip=all&crop=0%2C0%2C100%2C78.534031413613&w=1200" alt="智能手机销量下滑，高通押注数据中心">
+                <div class="news-content">
+                    <h4>智能手机销量下滑，高通押注数据中心</h4>
+                    <p>随着智能手机销量较2025年暴跌约20%，高通正转向数据中心，以提振盈利</p>
+                    <a href="https://www.theverge.com/ai-artificial-intelligence/1026867/qualcomm-earnings-data-centers" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://platform.theverge.com/wp-content/uploads/sites/2/2026/11/268859_How_the_tech_right_could_have_spent_all_the_money_they_burned_on_the_midterms_CVirginia.jpg?quality=90&strip=all&crop=0%2C10.732984293194%2C100%2C78.534031413613&w=1200" alt="埃隆·马斯克本可挥霍4.46亿美元的17种更好方式">
+                <div class="news-content">
+                    <h4>埃隆·马斯克本可挥霍4.46亿美元的17种更好方式</h4>
+                    <p>过度沉迷社交媒体的问题之一，是阅读一群哗众取宠者的帖子，最终让大脑受到损害</p>
+                    <a href="https://www.theverge.com/ai-artificial-intelligence/1026878/not-even-good-at-being-rich" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://platform.theverge.com/wp-content/uploads/sites/2/2026/11/IMG_1326_edit.jpg?quality=90&strip=all&crop=0,15.095986038394,100,69.808027923211" alt="我如何爱上了一个恼人的手机支架">
+                <div class="news-content">
+                    <h4>我如何爱上了一个恼人的手机支架</h4>
+                    <p>这段经历始于一块黄油般的物品：朋友的新手机支架，以及与之搭配的手机壳</p>
+                    <a href="https://www.theverge.com/tech/1026743/bright-colorful-phone-grip-case" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://platform.theverge.com/wp-content/uploads/sites/2/2025/11/Bose-QuietComfort-Headphones-lifestyle.png?quality=90&strip=all&crop=0%2C10.732984293194%2C100%2C78.534031413613&w=1200" alt="Bose QuietComfort耳机优惠超五折">
+                <div class="news-content">
+                    <h4>Bose QuietComfort耳机优惠超五折</h4>
+                    <p>顶级降噪耳机很少会打五折以上，但第一代Bose QuietComfort耳机目前正大幅降价</p>
+                    <a href="https://www.theverge.com/gadgets/1026807/bose-quietcomfort-headphones-wireless-deal-sale" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://via.placeholder.com/800x600/f4f1eb/333333?text=视野日报" alt="datasette-llm 0.1a10">
+                <div class="news-content">
+                    <h4>datasette-llm 0.1a10</h4>
+                    <p>datasette-llm发布0.1a10版本，修复了一项问题</p>
+                    <a href="https://simonwillison.net/2026/Nov/4/datasette-llm/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://via.placeholder.com/800x600/f4f1eb/333333?text=视野日报" alt="datasette-apps 0.3a0">
+                <div class="news-content">
+                    <h4>datasette-apps 0.3a0</h4>
+                    <p>datasette-apps发布0.3a0版本，更新说明内容不完整</p>
+                    <a href="https://simonwillison.net/2026/Nov/4/datasette-apps/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://static.simonwillison.net/static/2026/datasette-agent-panel.webp" alt="datasette-agent 0.5a0">
+                <div class="news-content">
+                    <h4>datasette-agent 0.5a0</h4>
+                    <p>datasette-agent发布0.5a0版本，具体更新说明内容不完整</p>
+                    <a href="https://simonwillison.net/2026/Nov/3/datasette-agent/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://via.placeholder.com/800x600/f4f1eb/333333?text=视野日报" alt="llm 0.37.1">
+                <div class="news-content">
+                    <h4>llm 0.37.1</h4>
+                    <p>llm发布0.37.1版本，这是一个错误修复版本</p>
+                    <a href="https://simonwillison.net/2026/Nov/3/llm/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://via.placeholder.com/800x600/f4f1eb/333333?text=视野日报" alt="我笔记本上的Qwen 3.8 27B也能解读模型权重">
+                <div class="news-content">
+                    <h4>我笔记本上的Qwen 3.8 27B也能解读模型权重</h4>
+                    <p>昨天备受关注的论文探讨了“权重空间编程”，指出大语言模型能够原生理解模型权重</p>
+                    <a href="https://simonwillison.net/2026/Nov/3/qwen-can-interpret-model-weights/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            </div></div><div class="section" id="文化艺术"><h3 class="section-title">文化艺术</h3><div class="section-grid">
+            <div class="news-item">
+                <img src="https://www.artnews.com/wp-content/uploads/2026/11/GettyImages-2303511001.jpg?w=1024" alt="中期选举民主党获胜后，特朗普着力推介宴会厅">
+                <div class="news-content">
+                    <h4>中期选举民主党获胜后，特朗普着力推介宴会厅</h4>
+                    <p>“我认为，这将是世界上最美丽的宴会厅。”他说。</p>
+                    <a href="https://www.artnews.com/art-news/news/trump-ballroom-midterm-elections-democrat-victory-1234804697/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://www.artnews.com/wp-content/uploads/2026/11/0G7A0660.jpg?w=1024" alt="安德烈娅·鲍尔斯在桑德雷托·雷·雷鲍登戈基金会致敬上世纪80年代气候行动者">
+                <div class="news-content">
+                    <h4>安德烈娅·鲍尔斯在桑德雷托·雷·雷鲍登戈基金会致敬上世纪80年代气候行动者</h4>
+                    <p>艺术家聚焦意大利反核女权运动及1983年在西西里岛科米索创立的女性营地“蛛网”。</p>
+                    <a href="https://www.artnews.com/art-news/artists/andrea-bowers-salutes-hidden-climate-change-activists-1980s-1234804684/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://www.artnews.com/wp-content/uploads/2026/11/alex-calder-jewelry-auction-4.webp?w=1000" alt="考尔德为家人制作的五件珠宝将于邦瀚斯拍卖，估价30万美元">
+                <div class="news-content">
+                    <h4>考尔德为家人制作的五件珠宝将于邦瀚斯拍卖，估价30万美元</h4>
+                    <p>这五件定制珠宝曾赠予他的姐姐、母亲和侄女，预计总成交价为30万美元。</p>
+                    <a href="https://www.artnews.com/art-news/market/jewelry-alexander-calder-made-family-head-to-bonhams-1234804688/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://www.artnews.com/wp-content/uploads/2026/11/GettyImages-2284043540.jpg?w=1024" alt="丹尼尔·西克马因谋杀纽约艺术品经销商布伦特·西克马被判终身监禁">
+                <div class="news-content">
+                    <h4>丹尼尔·西克马因谋杀纽约艺术品经销商布伦特·西克马被判终身监禁</h4>
+                    <p>他被判三项罪名成立：雇凶谋杀、共谋雇凶谋杀，以及共谋在外国实施谋杀。</p>
+                    <a href="https://www.artnews.com/art-news/news/daniel-sikkema-sentenced-life-prison-murder-brent-sikkema-1234804679/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://www.artnews.com/wp-content/uploads/2026/11/Wassily-Kandinsky-Betonte-Ecken-1000.jpg?w=1000" alt="西格拉姆继承人、破产对冲基金经理等亮相11月重点拍卖委托名单">
+                <div class="news-content">
+                    <h4>西格拉姆继承人、破产对冲基金经理等亮相11月重点拍卖委托名单</h4>
+                    <p>艺术市场始终重视来源；在市场更趋审慎之际，可靠来源已成为拍卖行成功的关键。</p>
+                    <a href="https://www.artnews.com/art-news/market/sothebys-christies-november-2026-auction-consignors-1234804676/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://storage.ghost.io/c/51/f8/51f871d8-b6be-4a73-b958-0ca4fff0110a/content/images/size/w1200/2026/11/b-sikkema-1.jpg" alt="丹尼尔·西克马因谋杀艺术品经销商布伦特·西克马被判终身监禁">
+                <div class="news-content">
+                    <h4>丹尼尔·西克马因谋杀艺术品经销商布伦特·西克马被判终身监禁</h4>
+                    <p>美国检察官杰米·麦克唐纳称，这名56岁男子应为“冷酷、周密策划的雇凶谋杀阴谋”负责。</p>
+                    <a href="https://hyperallergic.com/daniel-sikkema-sentenced-to-life-for-murder-of-art-dealer-brent-sikkema/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://storage.ghost.io/c/51/f8/51f871d8-b6be-4a73-b958-0ca4fff0110a/content/images/size/w1200/2026/11/GettyImages-1241379730.jpg" alt="如果你受邀参加第16届卡塞尔文献展，请听听我们的建议">
+                <div class="news-content">
+                    <h4>如果你受邀参加第16届卡塞尔文献展，请听听我们的建议</h4>
+                    <p>作为第15届文献展的两位艺术家，我们曾因支持巴勒斯坦而遭无情抨击；接受邀请前，请考虑这些问题。</p>
+                    <a href="https://hyperallergic.com/so-youve-been-invited-to-documenta-16-heres-our-advice/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://storage.ghost.io/c/51/f8/51f871d8-b6be-4a73-b958-0ca4fff0110a/content/images/size/w1200/2026/10/HC_AlisonNguyen_Still_0010_4096px.jpg" alt="西贝斯艺术家住宅区的前住户，依然遥不可及">
+                <div class="news-content">
+                    <h4>西贝斯艺术家住宅区的前住户，依然遥不可及</h4>
+                    <p>艾莉森·阮关于这座纽约知名艺术家住宅区的碎片化短片，若叙事更清晰些会更好。</p>
+                    <a href="https://hyperallergic.com/the-prior-occupants-of-westbeth-are-just-beyond-reach/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://storage.ghost.io/c/51/f8/51f871d8-b6be-4a73-b958-0ca4fff0110a/content/images/size/w1200/2026/11/crop-ali-cherri-getty.jpeg" alt="法国就以军空袭致艺术家阿里·谢里父母遇难展开战争罪调查">
+                <div class="news-content">
+                    <h4>法国就以军空袭致艺术家阿里·谢里父母遇难展开战争罪调查</h4>
+                    <p>国际特赦组织发现，以军没有证据证明空袭地点存在可核实的军事目标。</p>
+                    <a href="https://hyperallergic.com/france-opens-war-crimes-investigation-into-israeli-airstrike-that-killed-artist-ali-cherris-parents/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://storage.ghost.io/c/51/f8/51f871d8-b6be-4a73-b958-0ca4fff0110a/content/images/size/w1200/2026/11/GettyImages-2302948796.jpg" alt="曼达尼提出的五项投票提案均获通过，艺术团体仍持怀疑态度">
+                <div class="news-content">
+                    <h4>曼达尼提出的五项投票提案均获通过，艺术团体仍持怀疑态度</h4>
+                    <p>对地标保护的担忧及公众参与不足，尤其削弱了人们对第3号提案的信任。</p>
+                    <a href="https://hyperallergic.com/mamdanis-five-ballot-questions-pass-but-arts-groups-remain-skeptical/" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://cdn.mos.cms.futurecdn.net/xn4uYAPiXiEyscuXddsTGc-1920-80.jpg" alt="这款舒适高端平价人体工学椅黑五直降70美元">
+                <div class="news-content">
+                    <h4>这款舒适高端平价人体工学椅黑五直降70美元</h4>
+                    <p>Doro C300 Pro兼具舒适感与人体工学设计，扶手调节也很灵活。</p>
+                    <a href="https://www.creativebloq.com/deals/this-super-comfy-higher-end-budget-ergonomic-office-chair-has-usd70-off-for-black-friday" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://cdn.mos.cms.futurecdn.net/6eiurWsv3aagD4udotZBmT-2560-80.jpg" alt="《塞尔达传说：时之笛》评测出炉，评论家意见一致">
+                <div class="news-content">
+                    <h4>《塞尔达传说：时之笛》评测出炉，评论家意见一致</h4>
+                    <p>任天堂为这款28年前的经典作品施展了魔法。</p>
+                    <a href="https://www.creativebloq.com/news/the-legend-of-zelda-ocarina-of-time-switch-2-reviews-are-in-and-critics-agree-on-one-thing" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://cdn.mos.cms.futurecdn.net/MALewXXLaLSgXSZbDoH4L7-1920-80.jpg" alt="Canva大规模裁员为创意科技行业敲响警钟">
+                <div class="news-content">
+                    <h4>Canva大规模裁员为创意科技行业敲响警钟</h4>
+                    <p>没有人能免受其影响。</p>
+                    <a href="https://www.creativebloq.com/news/canvas-mass-layoffs-are-a-warning-sign-for-creative-tech" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://cdn.mos.cms.futurecdn.net/ZEc5SN8MFoXC7bi8CLnv5k-1600-80.jpg" alt="《魔兽世界：永恒》将重现艾泽拉斯，留住它的独特魅力">
+                <div class="news-content">
+                    <h4>《魔兽世界：永恒》将重现艾泽拉斯，留住它的独特魅力</h4>
+                    <p>暴雪的美术师与工程师解释，体积雾、月光森林和流动河水将如何还原玩家记忆中的原始艾泽拉斯。</p>
+                    <a href="https://www.creativebloq.com/features/world-of-warcraft-forever-is-bringing-azeroth-back-to-life-as-it-lives-in-our-heads-without-losing-what-made-it-special" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://cdn.mos.cms.futurecdn.net/zASMERcVZs2jehVv3iPN9f-1920-80.jpg" alt="这4款SAD灯优惠，让你的冬日明亮起来">
+                <div class="news-content">
+                    <h4>这4款SAD灯优惠，让你的冬日明亮起来</h4>
+                    <p>是时候好好改善我昏暗的家庭办公室了。</p>
+                    <a href="https://www.creativebloq.com/deals/these-4-sad-lamp-deals-will-brighten-up-your-winter" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            </div></div><div class="section" id="社会-文化"><h3 class="section-title">社会与文化</h3><div class="section-grid">
+            <div class="news-item">
+                <img src="https://static01.nyt.com/images/2026/11/04/opinion/04caldwell/04caldwell-articleLarge.jpg" alt="特朗普如何把一手好牌打得稀烂">
+                <div class="news-content">
+                    <h4>特朗普如何把一手好牌打得稀烂</h4>
+                    <p>特朗普2024年大胜，2025年支持率仍然不俗；但今年，虚荣、反复无常与愚蠢交织，让胜利果实化为苦果。</p>
+                    <a href="https://cn.nytimes.com/opinion/20261105/trump-midterms-republicans/?utm_source=RSS" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://static01.nyt.com/images/2026/11/04/arts/mood-stll-cine-mil-1/mood-stll-cine-mil-1-articleLarge.png" alt="美国选民为何拒绝特朗普领导的共和党">
+                <div class="news-content">
+                    <h4>美国选民为何拒绝特朗普领导的共和党</h4>
+                    <p>选民表达了对现状的不满和求变意愿。部分传统共和党人觉得党已面目全非，一名堪萨斯州选民直言：“共和党迷失了方向。”</p>
+                    <a href="https://cn.nytimes.com/usa/20261105/midterms-mood/?utm_source=RSS" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://static01.nyt.com/images/2026/12/03/multimedia/03pol-midterms-takeaways-01-tlwg/03pol-midterms-takeaways-01-tlwg-articleLarge.jpg" alt="共和党惨败之夜：中期选举八大看点">
+                <div class="news-content">
+                    <h4>共和党惨败之夜：中期选举八大看点</h4>
+                    <p>民主党压倒性胜选，重掌国会两院，并攻下深红选区。马斯克的巨额资金未能扭转局势，选民明确要求制衡总统权力。</p>
+                    <a href="https://cn.nytimes.com/usa/20261105/election-takeaways-democrats-win/?utm_source=RSS" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://static01.nyt.com/images/2026/11/04/multimedia/04int-global-midterm-reax-zbjv/04int-global-midterm-reax-zbjv-articleLarge.jpg" alt="特朗普惨败登上热搜，世界如何看美国中期选举">
+                <div class="news-content">
+                    <h4>特朗普惨败登上热搜，世界如何看美国中期选举</h4>
+                    <p>民主党大胜引发全球庆祝，各国也在审慎评估这场政治剧变对伊朗战争、中美竞争、关税等议题的影响。</p>
+                    <a href="https://cn.nytimes.com/usa/20261105/midterms-trump-foreign-policy-world/?utm_source=RSS" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://static01.nyt.com/images/2026/11/04/multimedia/04dc-trump-assess-kgzh/04dc-trump-assess-kgzh-articleLarge.jpg" alt="愤怒选民拉开特朗普时代落幕序幕">
+                <div class="news-content">
+                    <h4>愤怒选民拉开特朗普时代落幕序幕</h4>
+                    <p>特朗普把中期选举变成对自己的公投，最终付出代价。选民不满战争、高油价和总统牟利，他也失去了曾两度助他入主白宫的联盟。</p>
+                    <a href="https://cn.nytimes.com/usa/20261104/midterm-election-rebuke-of-trump-era/?utm_source=RSS" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://ichef.bbci.co.uk/news/1200/branded_zhongwen/9d27/live/882ecf10-d848-11f1-b870-55415e6a9944.jpg" alt="黄之锋串谋罪成判囚10年">
+                <div class="news-content">
+                    <h4>黄之锋串谋罪成判囚10年</h4>
+                    <p>香港民主派人士黄之锋被高等法院判囚10年，此前已在狱中逾6年。学者担忧国安法或被反复动用，使特定政治犯持续服刑。</p>
+                    <a href="https://www.bbc.com/zhongwen/articles/cm5ynepe9578o/trad?at_medium=RSS&at_campaign=rss" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://ichef.bbci.co.uk/news/1200/branded_zhongwen/634f/live/515ba0a0-d887-11f1-ad49-25abedf165e8.jpg" alt="美国中期选举结果对中国和世界意味着什么">
+                <div class="news-content">
+                    <h4>美国中期选举结果对中国和世界意味着什么</h4>
+                    <p>民主党胜选，将在特朗普余下任期内掌控国会。从乌克兰和中东冲突到美中贸易关系，BBC记者分析选举对世界的影响。</p>
+                    <a href="https://www.bbc.com/zhongwen/articles/ckreyrxvg3xyo/trad?at_medium=RSS&at_campaign=rss" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://ichef.bbci.co.uk/news/1200/branded_zhongwen/f863/live/48cc8c40-d889-11f1-8203-5d774478c31c.jpg" alt="民主党重掌国会：能做什么，不能做什么">
+                <div class="news-content">
+                    <h4>民主党重掌国会：能做什么，不能做什么</h4>
+                    <p>民主党可凭多数席位推动法案通过国会，但特朗普仍拥有否决权。</p>
+                    <a href="https://www.bbc.com/zhongwen/articles/cm8xzky58xw7o/trad?at_medium=RSS&at_campaign=rss" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://ichef.bbci.co.uk/news/1200/branded_zhongwen/5315/live/41e364b0-d854-11f1-94f3-cf7d1e52bb8c.jpg" alt="“这是一场灾难”：共和党惨败，怒火指向特朗普">
+                <div class="news-content">
+                    <h4>“这是一场灾难”：共和党惨败，怒火指向特朗普</h4>
+                    <p>一些共和党人告诉BBC，特朗普只顾自身政治遗产，忽视选民关切，令共和党付出代价。</p>
+                    <a href="https://www.bbc.com/zhongwen/articles/cw5ynld35e3ro/trad?at_medium=RSS&at_campaign=rss" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://ichef.bbci.co.uk/news/1200/branded_zhongwen/af16/live/b7f5b9f0-d84a-11f1-b870-55415e6a9944.jpg" alt="共和党中期选举惨败的五大原因">
+                <div class="news-content">
+                    <h4>共和党中期选举惨败的五大原因</h4>
+                    <p>从选民不满到总统支持率低迷，本文分析传统共和党票仓为何转而支持民主党。</p>
+                    <a href="https://www.bbc.com/zhongwen/articles/cxyvrz6qrm2lo/trad?at_medium=RSS&at_campaign=rss" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            </div></div><div class="section" id="宗教-意识形态"><h3 class="section-title">宗教与意识形态</h3><div class="section-grid">
+            <div class="news-item">
+                <img src="https://images.csmonitor.com/csm/2026/11/1104_NSTATES_BOTTOMS.jpg?alias=standard_900x600" alt="民主党州长占多数，政治影响或将扩散">
+                <div class="news-content">
+                    <h4>民主党州长占多数，政治影响或将扩散</h4>
+                    <p>民主党将在至少28个州执政，数十年来首次在州长席位上占多数。</p>
+                    <a href="https://www.csmonitor.com/USA/Politics/2026/1104/democrats-governors-midterms?icid=rss" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://images.csmonitor.com/csm/2026/11/1104_NMAGA_lede.jpg?alias=standard_900x600" alt="MAGA运动还有未来吗？期中选举反特朗普反弹后，前景未明">
+                <div class="news-content">
+                    <h4>MAGA运动还有未来吗？期中选举反特朗普反弹后，前景未明</h4>
+                    <p>2028年总统大选的角逐正升温，后特朗普时代已显露迹象。</p>
+                    <a href="https://www.csmonitor.com/USA/Politics/2026/1104/trump-maga-future-vance-desantis-rubio?icid=rss" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://images.csmonitor.com/csm/2026/11/1104_OPATTERNS_lede.jpg?alias=standard_900x600" alt="美国选民转向民主党，世界如何重新评估美国">
+                <div class="news-content">
+                    <h4>美国选民转向民主党，世界如何重新评估美国</h4>
+                    <p>美国期中选举中民主党势头增强，将对全球联盟、伙伴关系、战争与和平产生重大影响。</p>
+                    <a href="https://www.csmonitor.com/Perspectives/2026/1104/mid-terms-trump-global-leaders-alliances?icid=rss" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://images.csmonitor.com/csm/2026/11/1004_ODEMOCRATISRAEL_poster_lede.jpg?alias=standard_900x600" alt="民主党势头如何影响美以关系">
+                <div class="news-content">
+                    <h4>民主党势头如何影响美以关系</h4>
+                    <p>分析人士称，民主党在期中选举中的成功可能重塑美以关系。</p>
+                    <a href="https://www.csmonitor.com/World/Middle-East/2026/1104/israel-us-relationship-democrats-midterms?icid=rss" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://images.csmonitor.com/csm/2026/11/1104_NDEMS_voting_LEDE.jpg?alias=standard_900x600" alt="民主党当选承诺带来改变，如今必须转向施政">
+                <div class="news-content">
+                    <h4>民主党当选承诺带来改变，如今必须转向施政</h4>
+                    <p>生活成本上涨、伊朗战争和腐败问题推动选民支持民主党；胜选后，民主党面临挑战。</p>
+                    <a href="https://www.csmonitor.com/USA/Politics/2026/1104/democrats-midterm-victory-congress?icid=rss" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://images.aeonmedia.co/images/6f812564-7b90-4b1d-8500-f9d94bcdab28/like-aliens-landscape-2.jpg?width=1200&quality=75&format=jpeg" alt="像外星人一样">
+                <div class="news-content">
+                    <h4>像外星人一样</h4>
+                    <p>一口圆井从内部望去，顶部透入明亮光线，四周是木质井壁。</p>
+                    <a href="https://aeon.co/videos/in-tiny-biospheres-an-artist-reflects-the-fragility-of-our-own" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://images.aeonmedia.co/images/40611a3c-3e4d-417a-b2a9-5d3ec4f128a0/essay-gettyimages-1431136250.jpg?width=1200&quality=75&format=jpeg" alt="信仰与思考">
+                <div class="news-content">
+                    <h4>信仰与思考</h4>
+                    <p>雾气笼罩的道路通向远处教堂，两旁树木、建筑与电线营造出诡谲氛围。</p>
+                    <a href="https://aeon.co/essays/the-psychology-of-separating-church-and-state" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://images.aeonmedia.co/images/a37af664-ff12-479f-927e-47ae1ede2bf7/jo-marchant-in-search-of-now-landscape-1.jpg?width=1200&quality=75&format=jpeg" alt="乔·马钱特：寻找此刻">
+                <div class="news-content">
+                    <h4>乔·马钱特：寻找此刻</h4>
+                    <p>深色背景前，沙漏特写中的沙粒正缓缓流下。</p>
+                    <a href="https://aeon.co/videos/always-with-us-yet-ever-elusive-on-the-knottiness-of-now" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://images.aeonmedia.co/images/e7ea39c8-e023-47fb-820f-7a6d68ed3928/essay-humpbacks.jpg?width=1200&quality=75&format=jpeg" alt="自我塑造的世界">
+                <div class="news-content">
+                    <h4>自我塑造的世界</h4>
+                    <p>一群鲸鱼浮出碧绿海面，附近是岩石嶙峋、林木葱郁的海岸。</p>
+                    <a href="https://aeon.co/essays/the-self-making-world-of-jean-baptiste-lamarck" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://images.aeonmedia.co/images/b943b6cc-6d15-4809-b176-165891129bc0/essay-par17520.jpg?width=1200&quality=75&format=jpeg" alt="为杂家喝彩">
+                <div class="news-content">
+                    <h4>为杂家喝彩</h4>
+                    <p>一张黑白照片中，一名男子仿佛长有多只手，同时吸烟、写作、阅读和剪纸。</p>
+                    <a href="https://aeon.co/essays/why-the-dilettante-is-the-anti-hero-of-our-over-optimised-age" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://philosophynow.org/media/images/regulars/logo.png" alt="让我们谈谈形而上学">
+                <div class="news-content">
+                    <h4>让我们谈谈形而上学</h4>
+                    <p>作者：里克·刘易斯</p>
+                    <a href="https://philosophynow.org/issues/176/Lets_Get_Metaphysical" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://philosophynow.org/media/images/regulars/logo.png" alt="新闻：2026年10—11月">
+                <div class="news-content">
+                    <h4>新闻：2026年10—11月</h4>
+                    <p>努斯鲍姆获克卢格奖；埃德加·莫兰逝世，享年104岁；邓迪哲学界奋起反击；AI奴役人类的计划仍在推进。安雅·S报道</p>
+                    <a href="https://philosophynow.org/issues/176/News_October_November_2026" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://philosophynow.org/media/images/regulars/logo.png" alt="哲学家论人工智能">
+                <div class="news-content">
+                    <h4>哲学家论人工智能</h4>
+                    <p>作者：马特·夸沃特鲁普</p>
+                    <a href="https://philosophynow.org/issues/176/Philosophers_on_AI" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://philosophynow.org/media/images/regulars/logo.png" alt="因果关系史">
+                <div class="news-content">
+                    <h4>因果关系史</h4>
+                    <p>彼得·基布尔引发我们对因果关系的思考。</p>
+                    <a href="https://philosophynow.org/issues/176/Causation_A_History" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            
+            <div class="news-item">
+                <img src="https://philosophynow.org/media/images/regulars/logo.png" alt="“为何有某物，而非一无所有？”">
+                <div class="news-content">
+                    <h4>“为何有某物，而非一无所有？”</h4>
+                    <p>安德鲁·布伦纳试图厘清这个问题。</p>
+                    <a href="https://philosophynow.org/issues/176/Why_is_there_something_rather_than_nothing" target="_blank">详细阅读 →</a>
+                </div>
+            </div>
+            </div></div>
+        </main>
+
+        <!-- 版尾 - 名人生日 -->
+        <footer class="newspaper-footer">
+            <div class="ornament-divider"></div>
+            <div class="celebrity-birthday">
+                <h3>📅 今日诞辰</h3>
+                <p class="celebrity-name">未知名人</p>
+                <p class="celebrity-story">今天没有找到特别的名人生日记录。</p>
+            </div>
+            <div class="footer-note">
+                <p>视野日报 · 由 AI 自动生成 · 每日更新</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
