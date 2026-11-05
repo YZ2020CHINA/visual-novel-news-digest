@@ -204,6 +204,11 @@ body {
     border-bottom: 1px solid #ddd;
 }
 
+.news-item img.newsprint-photo {
+    object-fit: contain;
+    background: #f4f1eb;
+}
+
 .news-content {
     padding: 20px;
     flex-grow: 1;

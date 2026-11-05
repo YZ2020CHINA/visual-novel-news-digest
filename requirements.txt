@@ -2,3 +2,4 @@ openai
 feedparser
 requests
 beautifulsoup4
+Pillow>=10.0

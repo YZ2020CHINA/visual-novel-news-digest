@@ -15,6 +15,8 @@ from openai import OpenAI
 import requests
 from bs4 import BeautifulSoup
 import random
+from newsprint import convert_image_url
+from html import escape
 
 # 修复 Windows 控制台编码问题
 if sys.platform == "win32":
@@ -327,6 +329,7 @@ def generate_html(all_news, ai_result):
 
     # 准备各板块新闻（使用中文）
     sections_html = ""
+    converted_images = {}
     for category, items in all_news.items():
         if not items:
             continue
@@ -348,9 +351,15 @@ def generate_html(all_news, ai_result):
                         summary_cn = trans['summary_cn']
                         break
 
+            image_url = item['image']
+            if image_url not in converted_images:
+                converted_images[image_url] = convert_image_url(image_url)
+            image_src = converted_images[image_url]
+            image_class = ' class="newsprint-photo"' if image_src.startswith('data:image/jpeg;base64,') else ''
+
             sections_html += f"""
             <div class="news-item">
-                <img src="{item['image']}" alt="{title_cn}">
+                <img{image_class} src="{escape(image_src, quote=True)}" alt="{escape(title_cn, quote=True)}">
                 <div class="news-content">
                     <h4>{title_cn}</h4>
                     <p>{summary_cn}</p>
