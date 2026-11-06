@@ -1,0 +1,6 @@
+.runtime.json
+.initialize.lock
+*.log
+__pycache__/
+data/*.tmp
+data/*.backup.json

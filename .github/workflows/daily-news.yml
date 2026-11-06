@@ -3,9 +3,12 @@ name: 视野日报每日生成
 permissions:
   contents: write
 
+env:
+  TZ: Asia/Shanghai  # 提交信息中的 date 命令也使用北京时间
+
 on:
   schedule:
-    - cron: '0 0 * * *'  # 每天 UTC 00:00（北京时间 08:00）
+    - cron: '12 20 * * *'  # 每天 UTC 20:12（次日北京时间 04:12）
   workflow_dispatch:  # 允许手动触发
 
 jobs:
@@ -27,8 +30,8 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: 测试照片效果、排版和最新一期入口
-        run: python -m unittest test_newsprint test_latest_digest test_layout -v
+      - name: 测试照片效果、排版、新闻来源和最新一期入口
+        run: python -m unittest test_newsprint test_latest_digest test_layout test_news_sources -v
 
       - name: 生成视野日报
         env:

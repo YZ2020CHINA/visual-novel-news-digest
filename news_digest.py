@@ -10,7 +10,8 @@ import io
 import feedparser
 import os
 import re
-from datetime import datetime
+from calendar import timegm
+from datetime import datetime, timedelta, timezone
 from openai import OpenAI
 import requests
 from bs4 import BeautifulSoup
@@ -25,6 +26,9 @@ if sys.platform == "win32":
     sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
 
 # ============= 新闻源配置 =============
+
+BEIJING_TZ = timezone(timedelta(hours=8))
+ECONOMY_CATEGORY = '经济与市场'
 
 NEWS_SOURCES = {
     '独立游戏与视觉小说': [
@@ -42,13 +46,22 @@ NEWS_SOURCES = {
         'https://www.artificialintelligence-news.com/feed/',
     ],
 
+    ECONOMY_CATEGORY: [
+        'https://feeds.bbci.co.uk/news/business/rss.xml',
+        'https://www.cnbc.com/id/20910258/device/rss/rss.html',  # 全球经济
+        'https://www.cnbc.com/id/10000664/device/rss/rss.html',  # 金融市场
+        'https://www.theguardian.com/business/economics/rss',
+    ],
+
     '文化艺术': [
         'https://www.artnews.com/feed/',
         'https://hyperallergic.com/feed/',
         'https://www.creativebloq.com/feed',
+        'https://variety.com/v/film/feed/',
+        'https://www.theguardian.com/film/rss',
     ],
 
-    '社会与文化': [
+    '社会事件': [
         'https://cn.nytimes.com/rss.html',
         'https://www.bbc.com/zhongwen/simp/index.xml',
     ],
@@ -101,28 +114,52 @@ def extract_image_from_url(url):
     return 'https://via.placeholder.com/800x600/f4f1eb/333333?text=视野日报'
 
 
+def is_recent_economy_entry(entry, now):
+    """经济栏目只收录生成时最近24小时发布的新闻，不用旧闻补数。"""
+    published = entry.get('published_parsed') or entry.get('updated_parsed')
+    if not published:
+        return False
+    try:
+        published_at = datetime.fromtimestamp(timegm(published), timezone.utc)
+    except (TypeError, ValueError, OverflowError):
+        return False
+    return now - timedelta(hours=24) <= published_at <= now
+
+
 def fetch_news():
-    """抓取所有新闻源"""
+    """抓取所有新闻源；经济新闻按最近24小时筛选并按链接去重。"""
     all_news = {}
+    now = datetime.now(BEIJING_TZ)
 
     for category, feeds in NEWS_SOURCES.items():
         category_news = []
+        seen_links = set()
 
         for feed_url in feeds:
             try:
                 feed = feedparser.parse(feed_url)
-                for entry in feed.entries[:5]:  # 每个源取 5 条
+                accepted = 0
+                for entry in feed.entries:
+                    if category == ECONOMY_CATEGORY:
+                        if not is_recent_economy_entry(entry, now) or entry.get('link') in seen_links:
+                            continue
+                    if not entry.get('title') or not entry.get('link'):
+                        continue
                     news_item = {
                         'title': plain_text(entry.title),
                         'link': entry.link,
                         'summary': plain_text(entry.get('summary', entry.get('description', '')))[:800],
                         '_text_is_plain': True,
-                        'published': entry.get('published', ''),
+                        'published': entry.get('published', entry.get('updated', '')),
                         'image': extract_image_from_url(entry.link),  # 提取图片
                     }
                     category_news.append(news_item)
+                    seen_links.add(entry.link)
+                    accepted += 1
+                    if accepted == 5:  # 每个源最多5条，先筛选再计数
+                        break
 
-                print(f"✓ {category}: {feed_url}")
+                print(f"✓ {category}: {feed_url}（收录 {accepted} 条）")
             except Exception as e:
                 print(f"✗ {category}: {feed_url} - {e}")
 
@@ -133,7 +170,7 @@ def fetch_news():
 
 def get_celebrity_birthday():
     """获取今天生日的名人小故事"""
-    today = datetime.now()
+    today = datetime.now(BEIJING_TZ)
     month = today.month
     day = today.day
 
@@ -281,9 +318,9 @@ def translate_and_select_top_news(all_news):
 
 def generate_html(all_news, ai_result):
     """生成复古报纸风格的 HTML（使用中文翻译）"""
-    today = datetime.now()
+    today = datetime.now(BEIJING_TZ)
     date_str = today.strftime('%Y年%m月%d日')
-    issue_number = (today - datetime(2026, 11, 1)).days + 1
+    issue_number = (today.date() - datetime(2026, 11, 1).date()).days + 1
 
     celebrity_name, celebrity_story = get_celebrity_birthday()
 
@@ -395,7 +432,7 @@ def generate_html(all_news, ai_result):
 
 def save_html(html_content):
     """保存 HTML 文件"""
-    today = datetime.now().strftime('%Y-%m-%d')
+    today = datetime.now(BEIJING_TZ).strftime('%Y-%m-%d')
     output_dir = os.path.join(os.path.dirname(__file__), 'digests')
     os.makedirs(output_dir, exist_ok=True)
 

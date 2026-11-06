@@ -1,0 +1,131 @@
+{
+  "title": "视野日报",
+  "version": "1.0",
+  "viewport": {
+    "x": 35,
+    "y": 55,
+    "scale": 0.75
+  },
+  "nodes": [
+    {
+      "id": "requirements",
+      "title": "确认需求与范围",
+      "routeType": "prologue",
+      "color": "#9b8aff",
+      "x": 60,
+      "y": 80,
+      "characters": "Codex",
+      "location": "",
+      "bgm": "",
+      "summary": "新增经济与市场、文化艺术增加电影新闻、社会事件更名、北京时间每日04:12触发",
+      "script": "",
+      "image": "",
+      "choices": [
+        {
+          "id": "rel_1",
+          "text": "前置依赖",
+          "tag": "前置依赖",
+          "target": "implementation"
+        }
+      ],
+      "workflow": {
+        "status": "done",
+        "priority": "P1",
+        "files": [
+          "news_digest.py",
+          ".github/workflows/daily-news.yml",
+          "README.md",
+          "test_news_sources.py"
+        ],
+        "acceptance": [
+          "明确主要场景与交付范围"
+        ],
+        "blockReason": "",
+        "evidence": [
+          "用户已明确四项需求；经济新闻按生成时最近24小时收集"
+        ]
+      }
+    },
+    {
+      "id": "implementation",
+      "title": "实现项目功能",
+      "routeType": "common",
+      "color": "#73d2b3",
+      "x": 500,
+      "y": 80,
+      "characters": "Codex",
+      "location": "",
+      "bgm": "",
+      "summary": "更新新闻源、经济新闻时效筛选、北京时间日期及定时配置",
+      "script": "",
+      "image": "",
+      "choices": [
+        {
+          "id": "rel_2",
+          "text": "前置依赖",
+          "tag": "前置依赖",
+          "target": "verification"
+        }
+      ],
+      "workflow": {
+        "status": "done",
+        "priority": "P1",
+        "files": [
+          "news_digest.py",
+          ".github/workflows/daily-news.yml",
+          "README.md",
+          "test_news_sources.py"
+        ],
+        "acceptance": [
+          "实现已确认的需求",
+          "记录相关文件和检查结果"
+        ],
+        "blockReason": "",
+        "evidence": [
+          "新增4个经济RSS和2个电影RSS；社会事件栏目更名",
+          "cron改为12 20 * * *；Python及提交日期使用北京时间"
+        ]
+      }
+    },
+    {
+      "id": "verification",
+      "title": "验证与交付",
+      "routeType": "ending",
+      "color": "#b0cb70",
+      "x": 940,
+      "y": 80,
+      "characters": "Codex",
+      "location": "",
+      "bgm": "",
+      "summary": "新闻来源、新闻时效、跨UTC日期和六栏结构验收",
+      "script": "",
+      "image": "",
+      "choices": [],
+      "workflow": {
+        "status": "done",
+        "priority": "P1",
+        "files": [
+          "news_digest.py",
+          ".github/workflows/daily-news.yml",
+          "README.md",
+          "test_news_sources.py"
+        ],
+        "acceptance": [
+          "新增6个RSS能抓取实际新闻",
+          "最近24小时筛选及跨UTC日期归档正确",
+          "照片、最新入口和排版回归测试通过"
+        ],
+        "blockReason": "",
+        "evidence": [
+          "2026-11-06：30项unittest全部通过",
+          "新增6个RSS全部HTTP 200且含新闻；实际筛选18条经济新闻及10条电影新闻",
+          "local-previews/news-sources-verification.json保存实际抓取明细",
+          "git diff --check通过"
+        ]
+      }
+    }
+  ],
+  "groups": [],
+  "stickyNotes": [],
+  "customRoutes": []
+}

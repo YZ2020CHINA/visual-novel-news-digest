@@ -10,7 +10,7 @@
 
 🔗 **[阅读最新一期报纸](https://yz2020china.github.io/visual-novel-news-digest/digests/latest.html)**
 
-每天北京时间早上 8 点启动自动生成任务；生成成功后，这个固定链接会指向最新一期。生成失败时保留上一期，打开即可查看完整的复古报纸样式。
+每天计划于北京时间凌晨 04:12 触发自动生成任务；GitHub Actions 调度可能延迟，实际发布时间还需加上生成和部署耗时。生成成功后，这个固定链接会指向最新一期。生成失败时保留上一期，打开即可查看完整的复古报纸样式。
 
 ### 📁 历史存档
 
@@ -29,10 +29,10 @@
 
 - **复古报纸风格**：经典报纸排版，还原纸媒质感
 - **AI 智能编辑**：Claude AI 自动筛选头版新闻并生成中文摘要
-- **多领域新闻**：独立游戏、AI 科技、文化艺术、社会观察、宗教与意识形态
+- **多领域新闻**：独立游戏、AI 科技、经济与市场、文化艺术（含电影）、社会事件、宗教与意识形态
 - **图文并茂**：自动提取新闻配图
 - **彩色报纸印刷照片**：自动为新闻配图添加褪色、油墨网点和轻微套印偏移，直接嵌入 HTML
-- **每日更新**：GitHub Actions 每天早上 8 点自动生成
+- **每日更新**：GitHub Actions 计划每天北京时间 04:12 触发生成
 - **名人生日**：版尾附带当天诞生的名人小故事
 
 ## 📁 项目结构
@@ -98,16 +98,20 @@ python -m unittest test_newsprint -v
      - `OPENAI_BASE_URL`: API 基础 URL（可选）
 
 3. **自动运行**
-   - 每天北京时间 08:00 自动生成
+   - 计划每天北京时间 04:12 触发（cron：`12 20 * * *`，即前一天 UTC 20:12），实际运行可能因 GitHub 调度而延迟
+   - 报头、刊号和存档文件名均按北京时间计算，避免凌晨运行生成前一天日期的日报
    - 也可以在 Actions 页面手动触发
 
 ## 📰 新闻源
 
 - **独立游戏与视觉小说**: IndieGames, Reddit, Ren'Py, Itch.io
 - **AI 与科技**: MIT Tech Review, TechCrunch, The Verge, AI News
-- **文化艺术**: ArtNews, Hyperallergic, Creative Bloq
-- **社会与文化**: 纽约时报中文网, BBC 中文
+- **经济与市场**: BBC Business、CNBC Economy、CNBC Markets、The Guardian Economics，涵盖全球宏观经济、央行政策与金融市场
+- **文化艺术**: ArtNews, Hyperallergic, Creative Bloq，以及 Variety Film、The Guardian Film 的电影新闻
+- **社会事件**: 纽约时报中文网, BBC 中文
 - **宗教与意识形态**: Christian Science Monitor, Aeon, Philosophy Now
+
+经济与市场栏目收录生成时最近 24 小时内发布的新闻，覆盖北京时间凌晨出报时欧美前一交易时段的动态；按新闻链接去重，每个来源最多 5 条。无日期、过期和未来时间的条目会跳过，不用旧闻填充；若来源全部不可用或没有符合时间条件的报道，该期不显示空栏目。已有历史日报保留原始内容，新配置用于后续生成。
 
 ## 🎨 版面设计
 
