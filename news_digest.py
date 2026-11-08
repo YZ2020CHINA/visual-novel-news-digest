@@ -36,6 +36,9 @@ NEWS_SOURCES = {
         'https://www.reddit.com/r/visualnovels/.rss',
         'https://blog.renpy.org/feeds/posts/default',
         'https://itch.io/games/newest/tag-visual-novel.rss',
+        'https://www.gcores.com/rss',  # 机核
+        'https://www.ign.com.cn/feed.xml',  # IGN 中国
+        'https://waytoomany.games/feed/',  # WayTooManyGames
     ],
 
     'AI与科技': [

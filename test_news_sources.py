@@ -64,6 +64,29 @@ class NewsSourcesTests(unittest.TestCase):
                 patch.object(news_digest, 'extract_image_from_url', return_value='photo'):
             self.assertEqual(news_digest.fetch_news()['文化艺术'][0]['title'], 'film')
 
+    def test_new_game_feeds_collect_five_valid_articles_each_and_render_links(self):
+        category = '独立游戏与视觉小说'
+        new_feeds = ['https://www.gcores.com/rss',
+                     'https://www.ign.com.cn/feed.xml',
+                     'https://waytoomany.games/feed/']
+        for url in new_feeds:
+            self.assertIn(url, news_digest.NEWS_SOURCES[category])
+        feeds = [FeedParserDict(entries=[FeedParserDict(title='missing link')] +
+                               [entry(f'{source}-{i}') for i in range(7)])
+                 for source in ('gcores', 'ign', 'wtmg')]
+        with patch.dict(news_digest.NEWS_SOURCES, {category: new_feeds}, clear=True), \
+                patch.object(news_digest.feedparser, 'parse', side_effect=feeds) as parse, \
+                patch.object(news_digest, 'extract_image_from_url', return_value='photo'), \
+                patch.object(news_digest, 'convert_image_url', return_value='photo'):
+            news = news_digest.fetch_news()
+            soup = BeautifulSoup(news_digest.generate_html(news, None), 'html.parser')
+        self.assertEqual([call.args[0] for call in parse.call_args_list], new_feeds)
+        self.assertEqual([item['title'] for item in news[category]],
+                         [f'{source}-{i}' for source in ('gcores', 'ign', 'wtmg')
+                          for i in range(5)])
+        self.assertEqual([a['href'] for a in soup.select('.news-content a')],
+                         [item['link'] for item in news[category]])
+
     def test_all_six_sections_and_links_render_without_nested_cards(self):
         news = {category: [dict(entry(f'story{i}'), image='photo')]
                 for i, category in enumerate(news_digest.NEWS_SOURCES)}
