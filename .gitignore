@@ -13,3 +13,7 @@ config.py
 *.log
 *.tmp
 .DS_Store
+
+# Local project canvas and verification previews
+project-blocks/
+local-previews/
