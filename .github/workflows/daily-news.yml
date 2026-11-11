@@ -23,6 +23,8 @@ jobs:
       - name: 检出代码
         uses: actions/checkout@v4
         with:
+          # 排队期间上一期可能已提交；启动时读取分支最新版本及去重记录。
+          ref: ${{ github.ref_name }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 设置 Python
