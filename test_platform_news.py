@@ -37,6 +37,19 @@ class PlatformTests(unittest.TestCase):
         self.assertEqual(rows[0]['score'], 17)
         self.assertEqual(post.call_args.kwargs['json']['profile_urls'], ['demo'])
 
+    def test_x_current_scweet_output_and_handle_fallback(self):
+        response = Mock()
+        row = dict(id='123', handle='demo', text='Current output',
+                   created_at='Wed Nov 11 04:12:00 +0000 2026',
+                   favorite_count=10, retweet_count=2, reply_count=3)
+        response.json.return_value = [dict(row, tweet_url='https://x.com/demo/status/123'),
+                                      dict(row, id='124', user={'handle': 'demo'})]
+        with patch.dict('os.environ', {'APIFY_TOKEN': 'test-only'}), patch.object(platforms.requests, 'post', return_value=response):
+            rows = platforms.twitter({'x_actor': 'altimis/scweet', 'x_users': ['demo']}, self.now)
+        self.assertEqual([r['link'] for r in rows],
+                         ['https://x.com/demo/status/123', 'https://x.com/demo/status/124'])
+        self.assertEqual(rows[0]['score'], 17)
+
     def test_hn_deleted_old_and_partial_failure(self):
         def get(url):
             if 'topstories' in url:

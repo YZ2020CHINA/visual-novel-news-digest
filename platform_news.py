@@ -116,10 +116,10 @@ def twitter(config, now):
             continue
         date = row.get('created_at') or row.get('createdAt')
         text = row.get('full_text') or row.get('text')
-        link = row.get('url') or row.get('twitterUrl')
+        link = row.get('tweet_url') or row.get('url') or row.get('twitterUrl')
         if not link:
             user = row.get('user') or {}
-            handle = user.get('screen_name') or user.get('username') or row.get('username')
+            handle = row.get('handle') or user.get('handle') or user.get('screen_name') or user.get('username') or row.get('username')
             post_id = str(row.get('id_str') or row.get('id') or '').removeprefix('tweet-')
             if handle and post_id.isdigit():
                 link = f'https://x.com/{handle}/status/{post_id}'

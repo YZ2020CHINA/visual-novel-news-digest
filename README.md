@@ -133,6 +133,8 @@ python -m unittest test_newsprint -v
 
 Telegram 和 Hacker News 无需密钥。X 参考 [Horizon](https://github.com/Thysrael/Horizon) 的 Apify 接入方式，使用 `altimis/scweet` actor；在 GitHub 仓库 **Settings → Secrets and variables → Actions** 添加 `APIFY_TOKEN` 即可启用。Apify 运行可能消耗该账户额度，每次日报最多发起一次采集，最多请求 100 条候选，不额外采集评论。未配置凭据时仍生成其他新闻，X 栏目会明确提示未启用。不要把密钥写进 JSON 或提交到 Git。
 
+费用提示（2026-11-11 核对）：该 actor 文档另外规定免费试用累计 3,000 条，不是每月重置。每天 100 条约可运行 30 次，测试运行也可能消耗额度。Apify 平台免费额度与 actor 试用限制是两回事；长期运行前请检查 [actor 当前说明](https://apify.com/altimis/scweet) 和账户订阅、用量，程序不会自动替你升级套餐。
+
 ### 防止每天重复刊登
 
 - 全部栏目共同去重，清除链接中的 `utm_*`、`fbclid` 等追踪参数，统一 X/Twitter、Telegram 域名别名；保留用于区分新闻的查询参数。
