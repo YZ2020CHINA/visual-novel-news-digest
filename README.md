@@ -117,6 +117,42 @@ python -m unittest test_newsprint -v
 
 ## 🎨 版面设计
 
+### Telegram、X、Hacker News 独立板块
+
+新增三个平台栏目，每个平台从最近 **24 小时**候选内容中，先排除已刊登内容和重复新闻，再按热度取 **最多 5 条**。不足 5 条时显示实际数量，不用旧帖凑数。页面保留帖文原链接、来源及热度，并显示来源故障或未配置状态。
+
+配置文件为 `platform_sources.json`：
+
+| 平台 | 默认采集范围 | 排序规则 |
+| --- | --- | --- |
+| Telegram | solidot、TestFlightCN 公开频道网页预览 | 浏览量降序 |
+| X | Reuters、BBCWorld、TechCrunch、verge、OpenAI、AnthropicAI | 点赞 + 2 × 转发 + 回复 |
+| Hacker News | 官方 Firebase API 热榜前 150 个候选 | 积分降序 |
+
+这是指定来源及候选范围内的热门内容，不是全平台完整热榜。Telegram 预览通常只返回近期的一页消息，高频频道可能无法覆盖全天；HN 可通过 `hn_candidates` 调整候选数（上限 500）。频道、账号列表可直接修改配置文件。
+
+Telegram 和 Hacker News 无需密钥。X 参考 [Horizon](https://github.com/Thysrael/Horizon) 的 Apify 接入方式，使用 `altimis/scweet` actor；在 GitHub 仓库 **Settings → Secrets and variables → Actions** 添加 `APIFY_TOKEN` 即可启用。Apify 运行可能消耗该账户额度，每次日报最多发起一次采集，最多请求 100 条候选，不额外采集评论。未配置凭据时仍生成其他新闻，X 栏目会明确提示未启用。不要把密钥写进 JSON 或提交到 Git。
+
+### 防止每天重复刊登
+
+- 全部栏目共同去重，清除链接中的 `utm_*`、`fbclid` 等追踪参数，统一 X/Twitter、Telegram 域名别名；保留用于区分新闻的查询参数。
+- 相同规范化标题（至少 16 个字符）只保留一条；Telegram/HN 指向同一外部文章时也会合并。不同语言、完全改写标题的同一事件仍可能重复，本功能不是语义事件聚类。
+- 默认回看最近 30 天（含当日）的日报 HTML 和 `digests/YYYY-MM-DD.news.json` 刊登记录，首次启用也能从已有存档排除旧链接。旧存档只有翻译后的标题时，原文标题匹配从新记录开始生效。
+- 每个 RSS 来源先读最多 50 条候选，去重后保留最多 5 条，再获取配图，避免旧条目占满名额。原经济栏目的 24 小时时效规则继续保留。
+- 只有日报保存成功后才写入刊登记录，并随日报一起提交 Git；同一天重跑会合并记录，已刊登内容不会重新入选。没有任何新内容时保留上一期。
+
+验证全部功能（无需真实 API 密钥）：
+
+```bash
+python -X utf8 -m unittest test_newsprint test_latest_digest test_layout test_news_sources test_platform_news test_news_history -v
+```
+
+三个平台的适配实现根据 Horizon 公开接口和字段独立编写，没有引入其完整运行环境。
+
+### 工作室报头
+
+每期报头展示自动代谢工作室 Logo 和 [@johnvauk](https://x.com/johnvauk)，两者均可点击进入工作室 X 页面。Logo 已裁去多余空白，保留完整图形和文字，使用黑白印刷风格与自适应布局，并内嵌到 HTML，下载日报后无需外链加载。既有存档也已补上该报头，新闻内容保持原样。
+
 - **报头**：视野日报 + 日期 + 刊号
 - **头版**：当日最重要新闻，配大幅图片
 - **分栏内容**：各板块新闻，采用双栏布局

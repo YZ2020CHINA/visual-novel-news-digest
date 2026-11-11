@@ -1,0 +1,26 @@
+name: Source checks
+
+on:
+  push:
+    paths:
+      - '**.py'
+      - 'platform_sources.json'
+      - 'templates/**'
+      - 'static/**'
+      - 'requirements.txt'
+      - '.github/workflows/**'
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+      - run: python -m unittest test_newsprint test_latest_digest test_layout test_news_sources test_platform_news test_news_history -v

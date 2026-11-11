@@ -17,3 +17,6 @@ config.py
 # Local project canvas and verification previews
 project-blocks/
 local-previews/
+work/
+.venv/
+.env

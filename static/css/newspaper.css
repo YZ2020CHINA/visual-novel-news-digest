@@ -31,6 +31,32 @@ body {
 
 /* ========== 报头 ========== */
 
+.studio-brand {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 0 0 18px;
+    border-bottom: 1px solid #b5ad9e;
+    margin-bottom: 22px;
+    text-align: left;
+}
+.studio-logo-link { display: block; flex: 0 1 220px; min-width: 0; }
+.studio-logo { display: block; width: 100%; height: auto; mix-blend-mode: multiply; }
+.studio-social { color: #2b2b2b; text-decoration: none; flex-shrink: 0; text-align: right; }
+.studio-social-label { display: block; font-size: 0.68rem; letter-spacing: 0.14em; color: #70695d; }
+.studio-handle { display: block; font: 600 1.1rem/1.8 Georgia, serif; }
+.studio-social:hover .studio-handle { text-decoration: underline; text-underline-offset: 5px; }
+.studio-brand a:focus-visible { outline: 2px solid #2b2b2b; outline-offset: 6px; }
+.news-meta, .source-status { font-size: 0.8rem; color: #70695d; }
+.source-status { grid-column: 1 / -1; padding: 16px 0; border-top: 1px solid #b5ad9e; }
+@media (max-width: 600px) {
+    .studio-brand { gap: 14px; padding-bottom: 14px; margin-bottom: 16px; }
+    .studio-logo-link { flex-basis: 160px; }
+    .studio-social-label { font-size: 0.6rem; letter-spacing: 0.04em; }
+    .studio-handle { font-size: 0.9rem; }
+}
+
 .masthead {
     text-align: center;
     border-bottom: 4px double #2b2b2b;

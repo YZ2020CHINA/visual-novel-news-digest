@@ -1,0 +1,6 @@
+{
+  "telegram_channels": ["solidot", "TestFlightCN"],
+  "x_users": ["Reuters", "BBCWorld", "TechCrunch", "verge", "OpenAI", "AnthropicAI"],
+  "x_actor": "altimis/scweet",
+  "hn_candidates": 150
+}

@@ -19,6 +19,10 @@ import random
 import shutil
 from newsprint import convert_image_url
 from html import escape
+from pathlib import Path
+from platform_news import collect as collect_platforms, PLATFORMS
+from news_history import load_history, select_news, save_history
+from studio_brand import studio_brand_html
 
 # 修复 Windows 控制台编码问题
 if sys.platform == "win32":
@@ -129,7 +133,7 @@ def is_recent_economy_entry(entry, now):
     return now - timedelta(hours=24) <= published_at <= now
 
 
-def fetch_news():
+def fetch_news(candidate_limit=5, extract_images=True):
     """抓取所有新闻源；经济新闻按最近24小时筛选并按链接去重。"""
     all_news = {}
     now = datetime.now(BEIJING_TZ)
@@ -154,12 +158,13 @@ def fetch_news():
                         'summary': plain_text(entry.get('summary', entry.get('description', '')))[:800],
                         '_text_is_plain': True,
                         'published': entry.get('published', entry.get('updated', '')),
-                        'image': extract_image_from_url(entry.link),  # 提取图片
+                        'source': feed_url,
+                        'image': extract_image_from_url(entry.link) if extract_images else '',
                     }
                     category_news.append(news_item)
                     seen_links.add(entry.link)
                     accepted += 1
-                    if accepted == 5:  # 每个源最多5条，先筛选再计数
+                    if accepted == candidate_limit:
                         break
 
                 print(f"✓ {category}: {feed_url}（收录 {accepted} 条）")
@@ -319,7 +324,7 @@ def translate_and_select_top_news(all_news):
     }
 
 
-def generate_html(all_news, ai_result):
+def generate_html(all_news, ai_result, platform_status=None):
     """生成复古报纸风格的 HTML（使用中文翻译）"""
     today = datetime.now(BEIJING_TZ)
     date_str = today.strftime('%Y年%m月%d日')
@@ -384,6 +389,12 @@ def generate_html(all_news, ai_result):
     converted_images = {}
     for category, items in all_news.items():
         if not items:
+            if platform_status and category in platform_status:
+                category_id = category.replace(' ', '-').replace('与', '-')
+                message = platform_status[category]
+                if message == '正常':
+                    message = '最近24小时暂无未刊登的新帖'
+                sections_html += f'<div class="section" id="{escape(category_id)}"><h3 class="section-title">{escape(category)}</h3><p>{escape(message)}</p></div>'
             continue
 
         # 板块锚点ID
@@ -404,16 +415,22 @@ def generate_html(all_news, ai_result):
                         break
 
             image_url = item['image']
-            if image_url not in converted_images:
+            if image_url and image_url not in converted_images:
                 converted_images[image_url] = convert_image_url(image_url)
-            image_src = converted_images[image_url]
+            image_src = converted_images.get(image_url, '')
             image_class = ' class="newsprint-photo"' if image_src.startswith('data:image/jpeg;base64,') else ''
+            image_html = f'<img{image_class} src="{escape(image_src, quote=True)}" alt="{escape(title_cn, quote=True)}">' if image_src else ''
+            source_html = ''
+            if category in PLATFORMS:
+                metric = {'Telegram 热门': '浏览', 'X 热门': '互动热度', 'Hacker News 热门': '积分'}[category]
+                source_html = f'<p class="news-meta">{escape(item.get("source", category))} · {metric} {int(item.get("score", 0))}</p>'
 
             sections_html += f"""
             <div class="news-item">
-                <img{image_class} src="{escape(image_src, quote=True)}" alt="{escape(title_cn, quote=True)}">
+                {image_html}
                 <div class="news-content">
                     <h4>{escape(title_cn)}</h4>
+                    {source_html}
                     <p>{escape(summary_cn)}</p>
                     <a href="{escape(item['link'], quote=True)}" target="_blank" rel="noopener noreferrer">详细阅读 →</a>
                 </div>
@@ -422,8 +439,13 @@ def generate_html(all_news, ai_result):
 
         sections_html += '</div></div>'
 
+    if platform_status:
+        notes = '；'.join(f'{name}：{message}' for name, message in platform_status.items())
+        sections_html += f'<p class="source-status">平台采集状态 · {escape(notes)}</p>'
+
     # 替换模板变量
     html = template.replace('{{DATE}}', date_str)
+    html = html.replace('{{STUDIO_BRAND}}', studio_brand_html())
     html = html.replace('{{ISSUE_NUMBER}}', str(issue_number))
     html = html.replace('{{TOP_STORY}}', top_story_html)
     html = html.replace('{{SECTIONS}}', sections_html)
@@ -461,7 +483,17 @@ def main():
 
         # 1. 抓取新闻
         print("[NEWS] 正在抓取新闻...")
-        all_news = fetch_news()
+        now = datetime.now(BEIJING_TZ)
+        output_dir = Path(__file__).parent / 'digests'
+        history = load_history(output_dir, now)
+        platform_news, platform_status = collect_platforms(now)
+        # Reserve platform sections first; suppress duplicate linked articles in RSS sections.
+        candidates = {**platform_news, **fetch_news(candidate_limit=50, extract_images=False)}
+        selected = select_news(candidates, history, PLATFORMS)
+        all_news = {name: selected[name] for name in list(NEWS_SOURCES) + list(PLATFORMS)}
+        for category in NEWS_SOURCES:
+            for item in all_news[category]:
+                item['image'] = extract_image_from_url(item['link'])
 
         total_count = sum(len(items) for items in all_news.values())
         print(f"[OK] 共获取 {total_count} 条新闻")
@@ -482,10 +514,11 @@ def main():
 
         # 3. 生成 HTML
         print("[HTML] 生成报纸页面...")
-        html_content = generate_html(all_news, ai_result)
+        html_content = generate_html(all_news, ai_result, platform_status)
 
         # 4. 保存文件
         saved_file = save_html(html_content)
+        save_history(output_dir, now, all_news)
 
         print("=" * 50)
         print("[DONE] 完成！")
