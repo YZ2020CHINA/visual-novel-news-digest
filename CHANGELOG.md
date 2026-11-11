@@ -2,6 +2,7 @@
 
 ## 2026-11-11
 
+- 社会事件类别新增 Bloomberg Businessweek 官方 RSS，沿用现有翻译、配图和跨期去重流程。
 - 新增 Telegram、X、Hacker News 独立热门栏目，各取最近24小时内去重后的最多5条。
 - 增加平台来源配置、热度显示和故障状态；X 凭据通过 GitHub Actions Secret 注入。
 - 增加跨来源及最近30天刊登去重，兼容既有 HTML 存档；刊登记录随日报提交。

@@ -71,6 +71,7 @@ NEWS_SOURCES = {
     '社会事件': [
         'https://cn.nytimes.com/rss.html',
         'https://www.bbc.com/zhongwen/simp/index.xml',
+        'https://www.bloomberg.com/feeds/businessweek/news.rss',  # Bloomberg Businessweek
     ],
 
     '宗教与意识形态': [

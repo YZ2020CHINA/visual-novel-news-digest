@@ -108,7 +108,7 @@ python -m unittest test_newsprint -v
 - **AI 与科技**: MIT Tech Review, TechCrunch, The Verge, AI News
 - **经济与市场**: BBC Business、CNBC Economy、CNBC Markets、The Guardian Economics，涵盖全球宏观经济、央行政策与金融市场
 - **文化艺术**: ArtNews, Hyperallergic, Creative Bloq，以及 Variety Film、The Guardian Film 的电影新闻
-- **社会事件**: 纽约时报中文网, BBC 中文
+- **社会事件**: 纽约时报中文网, BBC 中文, [Bloomberg Businessweek](https://www.bloomberg.com/businessweek)（官方 RSS）
 - **宗教与意识形态**: Christian Science Monitor, Aeon, Philosophy Now
 
 游戏栏目新增订阅入口：[机核 RSS](https://www.gcores.com/rss)、[IGN 中国 RSS](https://www.ign.com.cn/feed.xml)、[WayTooManyGames RSS](https://waytoomany.games/feed/)。每个来源读取订阅中的前 5 条有效文章，沿用中文翻译、摘要、配图和原文阅读链接流程；单个来源抓取失败不会中断其他来源。游戏栏目包含综合游戏资讯与评测，不额外限制为视觉小说。
