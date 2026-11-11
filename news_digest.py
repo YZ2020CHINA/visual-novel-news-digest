@@ -51,6 +51,7 @@ NEWS_SOURCES = {
         'https://www.theverge.com/rss/index.xml',
         'https://simonwillison.net/atom/everything/',
         'https://www.artificialintelligence-news.com/feed/',
+        'https://www.bloomberg.com/feeds/technology/news.rss',  # Bloomberg Technology
     ],
 
     ECONOMY_CATEGORY: [
@@ -58,6 +59,8 @@ NEWS_SOURCES = {
         'https://www.cnbc.com/id/20910258/device/rss/rss.html',  # 全球经济
         'https://www.cnbc.com/id/10000664/device/rss/rss.html',  # 金融市场
         'https://www.theguardian.com/business/economics/rss',
+        'https://www.bloomberg.com/feeds/markets/news.rss',  # Bloomberg Markets
+        'https://www.bloomberg.com/feeds/economics/news.rss',  # Bloomberg Economics
     ],
 
     '文化艺术': [
@@ -72,6 +75,7 @@ NEWS_SOURCES = {
         'https://cn.nytimes.com/rss.html',
         'https://www.bbc.com/zhongwen/simp/index.xml',
         'https://www.bloomberg.com/feeds/businessweek/news.rss',  # Bloomberg Businessweek
+        'https://www.bloomberg.com/feeds/politics/news.rss',  # Bloomberg Politics
     ],
 
     '宗教与意识形态': [

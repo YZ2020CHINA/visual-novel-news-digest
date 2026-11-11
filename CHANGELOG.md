@@ -2,6 +2,7 @@
 
 ## 2026-11-11
 
+- 扩充 Bloomberg 官方分类 RSS：Technology 进入 AI与科技，Markets/Economics 进入经济与市场，Politics 进入社会事件；沿用跨栏目和跨期去重。
 - 社会事件类别新增 Bloomberg Businessweek 官方 RSS，沿用现有翻译、配图和跨期去重流程。
 - 新增 Telegram、X、Hacker News 独立热门栏目，各取最近24小时内去重后的最多5条。
 - 增加平台来源配置、热度显示和故障状态；X 凭据通过 GitHub Actions Secret 注入。
