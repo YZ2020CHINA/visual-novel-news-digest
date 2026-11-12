@@ -10,6 +10,12 @@
 
 🔗 **[阅读最新一期报纸](https://yz2020china.github.io/visual-novel-news-digest/digests/latest.html)**
 
+### ✉ 邮箱订阅
+
+📬 **[点击订阅，填写邮箱即可每天收到新一期](https://buttondown.com/visiondaily)**
+
+在订阅页填写邮箱，再点击确认邮件中的链接即可生效（双重确认，防止他人冒用邮箱）。之后每期日报生成并发布后，邮箱会收到一封包含各栏目要闻和原文链接的邮件，并附完整一期的在线阅读链接。每封邮件底部都有退订链接，点击即可取消订阅。订阅名单由 [Buttondown](https://buttondown.com) 托管，不保存在本仓库。
+
 每天计划于北京时间凌晨 04:12 触发自动生成任务；GitHub Actions 调度可能延迟，实际发布时间还需加上生成和部署耗时。生成成功后，这个固定链接会指向最新一期。生成失败时保留上一期，打开即可查看完整的复古报纸样式。
 
 ### 📁 历史存档
@@ -48,6 +54,15 @@
 ```
 
 ## 🚀 使用方法
+
+### 邮箱订阅部署（仓库维护者）
+
+1. 在 [Buttondown](https://buttondown.com) 注册账号（前 100 位订阅者免费），在 Settings 中确认用户名；订阅页地址为 `https://buttondown.com/<用户名>`。
+2. 若用户名不是 `visiondaily`，修改 `newsletter.json` 中的 `buttondown_username`，并同步替换本 README 中的订阅链接，然后运行 `python newsletter.py backfill` 更新已有存档的报头。
+3. 在 Buttondown Settings → API 复制密钥，加入 GitHub 仓库 **Settings → Secrets and variables → Actions**，名称为 `BUTTONDOWN_API_KEY`。不要写进代码或提交到 Git。
+4. 未配置密钥时，日报照常生成，仅跳过发信。每次发信使用 `daily-YYYY-MM-DD` 作为固定标识，同一天重跑不会重复发送；当天没有新生成的日报时也不会重发旧报。
+
+邮件是精简的要闻摘要（不含内嵌配图），完整配图版请点击邮件中的在线阅读链接。订阅、确认、退订和投递均由 Buttondown 处理；超出免费额度后需按其[定价](https://buttondown.com/pricing)付费。
 
 ### 本地运行
 
