@@ -95,8 +95,9 @@ class NewsSourcesTests(unittest.TestCase):
         self.assertEqual(len(soup.select('main > .section')), 6)
         self.assertEqual(len(soup.select('.index-section')), 6)
         self.assertEqual(len(soup.select('.news-item .news-item')), 0)
-        self.assertIn('经济与市场', [h.get_text() for h in soup.select('.section-title')])
-        self.assertIn('社会事件', [h.get_text() for h in soup.select('.section-title')])
+        titles = [h.get_text() for h in soup.select('.section-title')]
+        self.assertEqual(titles, list(news_digest.NEWS_SOURCES))
+        self.assertEqual([a.get_text() for a in soup.select('.index-section h3 a')], titles)
         self.assertNotIn('社会与文化', soup.get_text())
         for link in soup.select('.index-section h3 a'):
             self.assertIsNotNone(soup.find(id=link['href'][1:]))

@@ -35,23 +35,11 @@ BEIJING_TZ = timezone(timedelta(hours=8))
 ECONOMY_CATEGORY = '经济与市场'
 
 NEWS_SOURCES = {
-    '独立游戏与视觉小说': [
-        'https://www.indiegames.com/feed/',
-        'https://www.reddit.com/r/visualnovels/.rss',
-        'https://blog.renpy.org/feeds/posts/default',
-        'https://itch.io/games/newest/tag-visual-novel.rss',
-        'https://www.gcores.com/rss',  # 机核
-        'https://www.ign.com.cn/feed.xml',  # IGN 中国
-        'https://waytoomany.games/feed/',  # WayTooManyGames
-    ],
-
-    'AI与科技': [
-        'https://www.technologyreview.com/feed/',
-        'https://techcrunch.com/feed/',
-        'https://www.theverge.com/rss/index.xml',
-        'https://simonwillison.net/atom/everything/',
-        'https://www.artificialintelligence-news.com/feed/',
-        'https://www.bloomberg.com/feeds/technology/news.rss',  # Bloomberg Technology
+    '社会事件': [
+        'https://cn.nytimes.com/rss.html',
+        'https://www.bbc.com/zhongwen/simp/index.xml',
+        'https://www.bloomberg.com/feeds/businessweek/news.rss',  # Bloomberg Businessweek
+        'https://www.bloomberg.com/feeds/politics/news.rss',  # Bloomberg Politics
     ],
 
     ECONOMY_CATEGORY: [
@@ -63,6 +51,15 @@ NEWS_SOURCES = {
         'https://www.bloomberg.com/feeds/economics/news.rss',  # Bloomberg Economics
     ],
 
+    'AI与科技': [
+        'https://www.technologyreview.com/feed/',
+        'https://techcrunch.com/feed/',
+        'https://www.theverge.com/rss/index.xml',
+        'https://simonwillison.net/atom/everything/',
+        'https://www.artificialintelligence-news.com/feed/',
+        'https://www.bloomberg.com/feeds/technology/news.rss',  # Bloomberg Technology
+    ],
+
     '文化艺术': [
         'https://www.artnews.com/feed/',
         'https://hyperallergic.com/feed/',
@@ -71,11 +68,14 @@ NEWS_SOURCES = {
         'https://www.theguardian.com/film/rss',
     ],
 
-    '社会事件': [
-        'https://cn.nytimes.com/rss.html',
-        'https://www.bbc.com/zhongwen/simp/index.xml',
-        'https://www.bloomberg.com/feeds/businessweek/news.rss',  # Bloomberg Businessweek
-        'https://www.bloomberg.com/feeds/politics/news.rss',  # Bloomberg Politics
+    '独立游戏与视觉小说': [
+        'https://www.indiegames.com/feed/',
+        'https://www.reddit.com/r/visualnovels/.rss',
+        'https://blog.renpy.org/feeds/posts/default',
+        'https://itch.io/games/newest/tag-visual-novel.rss',
+        'https://www.gcores.com/rss',  # 机核
+        'https://www.ign.com.cn/feed.xml',  # IGN 中国
+        'https://waytoomany.games/feed/',  # WayTooManyGames
     ],
 
     '宗教与意识形态': [
