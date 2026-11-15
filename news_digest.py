@@ -96,6 +96,42 @@ def plain_text(value):
     return ' '.join(soup.get_text(' ', strip=True).split())
 
 
+def parse_translation_pairs(text, start_index, batch):
+    """Parse model translations despite spacing, punctuation, or markdown variants."""
+    text = str(text or '')
+    # Models may use 标题 1：, 标题1:, **标题1:**, or English labels.
+    title_re = re.compile(
+        r'(?:\*{0,2}\s*)?(?:标题|title)\s*([0-9]+)\s*(?:\*{0,2}\s*)[:：]\s*(.*)',
+        re.IGNORECASE,
+    )
+    summary_re = re.compile(
+        r'(?:\*{0,2}\s*)?(?:摘要|summary)\s*([0-9]+)\s*(?:\*{0,2}\s*)[:：]\s*(.*)',
+        re.IGNORECASE,
+    )
+    titles, summaries = {}, {}
+    for line in text.splitlines():
+        line = re.sub(r'^\s*(?:[-*•]\s+|\d+[.)]\s+)', '', line).strip()
+        match = title_re.match(line)
+        if match:
+            titles[int(match.group(1))] = plain_text(re.sub(r'^\*+\s*', '', match.group(2)))
+            continue
+        match = summary_re.match(line)
+        if match:
+            summaries[int(match.group(1))] = plain_text(re.sub(r'^\*+\s*', '', match.group(2)))
+
+    parsed = []
+    for offset, item in enumerate(batch):
+        index = start_index + offset
+        number = index + 1
+        parsed.append({
+            'index': index,
+            'title_cn': titles.get(number),
+            'summary_cn': summaries.get(number),
+            '_text_is_plain': True,
+        })
+    return parsed
+
+
 def extract_image_from_url(url):
     """从网页中提取主图"""
     try:
@@ -294,21 +330,12 @@ def translate_and_select_top_news(all_news):
 
                 result_text = response2.choices[0].message.content
 
-                # 解析翻译结果
-                for i, item in enumerate(batch):
-                    idx = batch_start + i + 1
-                    title_pattern = f"标题{idx}:\\s*(.+)"
-                    summary_pattern = f"摘要{idx}:\\s*(.+)"
-
-                    title_match = re.search(title_pattern, result_text)
-                    summary_match = re.search(summary_pattern, result_text)
-
-                    translations[category].append({
-                        "index": batch_start + i,
-                        "title_cn": plain_text(title_match.group(1)) if title_match else (item['title'] if item.get('_text_is_plain') else plain_text(item['title'])),
-                        "summary_cn": plain_text(summary_match.group(1)) if summary_match else (item['summary'] if item.get('_text_is_plain') else plain_text(item['summary']))[:200],
-                        "_text_is_plain": True,
-                    })
+                # 解析翻译结果。模型偶尔会改变空格、冒号或加 Markdown 标记。
+                parsed = parse_translation_pairs(result_text, batch_start, batch)
+                for item, trans in zip(batch, parsed):
+                    trans['title_cn'] = trans['title_cn'] or (item['title'] if item.get('_text_is_plain') else plain_text(item['title']))
+                    trans['summary_cn'] = trans['summary_cn'] or ((item['summary'] if item.get('_text_is_plain') else plain_text(item['summary']))[:200])
+                    translations[category].append(trans)
 
                 print(f"[AI] {category} 批次 {batch_start//batch_size + 1} 翻译完成")
 

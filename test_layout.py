@@ -10,6 +10,30 @@ with patch('sys.platform', 'linux'):
 
 
 class LayoutTests(unittest.TestCase):
+    def test_translation_parser_accepts_spacing_markdown_and_fullwidth_colon(self):
+        batch = [{'title': 'Original title', 'summary': 'Original summary'}]
+        parsed = news_digest.parse_translation_pairs(
+            '**标题 1：** 中文标题\n- 摘要 1：中文摘要', 0, batch)
+        self.assertEqual(parsed[0]['title_cn'], '中文标题')
+        self.assertEqual(parsed[0]['summary_cn'], '中文摘要')
+
+    def test_translation_parser_accepts_english_labels(self):
+        batch = [{'title': 'Original title', 'summary': 'Original summary'}]
+        parsed = news_digest.parse_translation_pairs(
+            'Title 1: 中文标题\nSummary 1: 中文摘要', 0, batch)
+        self.assertEqual(parsed[0]['title_cn'], '中文标题')
+        self.assertEqual(parsed[0]['summary_cn'], '中文摘要')
+
+    def test_translation_parser_keeps_missing_pairs_explicit_for_fallback(self):
+        batch = [
+            {'title': 'First title', 'summary': 'First summary'},
+            {'title': 'Second title', 'summary': 'Second summary'},
+        ]
+        parsed = news_digest.parse_translation_pairs(
+            '标题1: 第一条\n摘要1: 第一条摘要', 0, batch)
+        self.assertEqual(parsed[0]['title_cn'], '第一条')
+        self.assertIsNone(parsed[1]['title_cn'])
+
     def test_unclosed_summary_cannot_nest_cards_or_sections(self):
         item = {'title': 'First', 'summary': '<!-- SC_OFF --><div class="md"><p>Readable <b>news</b><table><tr><td>tail',
                 'link': 'https://example.org/story', 'image': 'https://example.org/photo'}
