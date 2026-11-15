@@ -121,14 +121,14 @@ python -m unittest test_newsprint -v
 
 - **社会事件**: 纽约时报中文网, BBC 中文, [Bloomberg Businessweek](https://www.bloomberg.com/businessweek)、Bloomberg Politics（官方 RSS）
 - **经济与市场**: BBC Business、CNBC Economy、CNBC Markets、The Guardian Economics、Bloomberg Markets、Bloomberg Economics，涵盖全球宏观经济、央行政策与金融市场
-- **AI 与科技**: MIT Tech Review, TechCrunch, The Verge, AI News, Bloomberg Technology
-- **文化艺术**: ArtNews, Hyperallergic, Creative Bloq，以及 Variety Film、The Guardian Film 的电影新闻
+- **AI 与科技**: MIT Tech Review, TechCrunch, The Verge, [Simon Willison](https://simonwillison.net/atom/everything/), AI News, Bloomberg Technology
+- **文化艺术**: ArtNews, Hyperallergic, Creative Bloq，以及 Variety Film、The Guardian Film、The Guardian Books、The Guardian Art & Design、BBC Entertainment & Arts
 - **独立游戏与视觉小说**: IndieGames, Reddit, Ren'Py, Itch.io，以及机核、IGN 中国、WayTooManyGames 的游戏资讯与评测
-- **宗教与意识形态**: Christian Science Monitor, Aeon, Philosophy Now
+- **宗教与意识形态**: Christian Science Monitor, Aeon, Philosophy Now、The Guardian Religion、[Vatican News 中文](https://www.vaticannews.va/zh.rss.xml)、NPR Religion、[寒冬 Bitter Winter](https://www.bitterwinter.org/feed/)
 
 游戏栏目新增订阅入口：[机核 RSS](https://www.gcores.com/rss)、[IGN 中国 RSS](https://www.ign.com.cn/feed.xml)、[WayTooManyGames RSS](https://waytoomany.games/feed/)。每个来源读取订阅中的前 5 条有效文章，沿用中文翻译、摘要、配图和原文阅读链接流程；单个来源抓取失败不会中断其他来源。游戏栏目包含综合游戏资讯与评测，不额外限制为视觉小说。
 
-经济与市场栏目收录生成时最近 24 小时内发布的新闻，覆盖北京时间凌晨出报时欧美前一交易时段的动态；按新闻链接去重，每个来源最多 5 条。无日期、过期和未来时间的条目会跳过，不用旧闻填充；若来源全部不可用或没有符合时间条件的报道，该期不显示空栏目。已有历史日报保留原始内容，新配置用于后续生成。
+经济与市场栏目收录生成时最近 24 小时内发布的新闻，覆盖北京时间凌晨出报时欧美前一交易时段的动态；按新闻链接去重，每个来源最多 5 条。无日期、过期和未来时间的条目会跳过，不用旧闻填充。某个栏目没有符合条件的新内容时，目录和正文都会保留该栏目，并注明“最近暂无未刊登的新内容”；平台栏目则显示各自的采集状态。已有历史日报保留原始内容，新配置用于后续生成。
 
 ## 🎨 版面设计
 
@@ -154,9 +154,9 @@ Telegram 和 Hacker News 无需密钥。X 参考 [Horizon](https://github.com/Th
 
 - 全部栏目共同去重，清除链接中的 `utm_*`、`fbclid` 等追踪参数，统一 X/Twitter、Telegram 域名别名；保留用于区分新闻的查询参数。
 - 相同规范化标题（至少 16 个字符）只保留一条；Telegram/HN 指向同一外部文章时也会合并。不同语言、完全改写标题的同一事件仍可能重复，本功能不是语义事件聚类。
-- 默认回看最近 30 天（含当日）的日报 HTML 和 `digests/YYYY-MM-DD.news.json` 刊登记录，首次启用也能从已有存档排除旧链接。旧存档只有翻译后的标题时，原文标题匹配从新记录开始生效。
+- 默认回看最近 30 天的日报 HTML 和 `digests/YYYY-MM-DD.news.json` 刊登记录。生成日报时不把当天自己的版本算作已刊登，所以同一天重跑会得到与第一次相同的候选池，不会因为重复生成而让栏目越来越空。旧存档只有翻译后的标题时，原文标题匹配从新记录开始生效。
 - 每个 RSS 来源先读最多 50 条候选，去重后保留最多 5 条，再获取配图，避免旧条目占满名额。原经济栏目的 24 小时时效规则继续保留。
-- 只有日报保存成功后才写入刊登记录，并随日报一起提交 Git；同一天重跑会合并记录，已刊登内容不会重新入选。没有任何新内容时保留上一期。
+- 只有日报保存成功后才写入刊登记录，并随日报一起提交 Git。同一天重跑会覆盖当天日报，刊登记录则合并保存，当天各次生成出现过的内容从次日起都不会重复刊登。没有任何新内容时保留上一期。
 
 验证全部功能（无需真实 API 密钥）：
 

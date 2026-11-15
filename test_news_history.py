@@ -37,6 +37,20 @@ class HistoryTests(unittest.TestCase):
             self.assertTrue({'url:https://a/1', 'url:https://a/2'} <= load_history(path, now))
             self.assertEqual(len(json.loads((path / '2026-11-11.news.json').read_text())['keys']), 2)
 
+    def test_exclude_today_skips_current_edition_but_keeps_yesterday(self):
+        now = datetime(2026, 11, 15, 4, 12, tzinfo=timezone.utc)
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory)
+            (path / '2026-11-15.html').write_text(
+                '<div class="news-item"><h4>Today</h4><a href="https://a/today">read</a></div>',
+                encoding='utf-8')
+            (path / '2026-11-14.html').write_text(
+                '<div class="news-item"><h4>Yesterday</h4><a href="https://a/yesterday">read</a></div>',
+                encoding='utf-8')
+            seen = load_history(path, now, exclude_today=True)
+            self.assertNotIn('url:https://a/today', seen)
+            self.assertIn('url:https://a/yesterday', seen)
+
     def test_old_archives_expire_and_short_titles_do_not_collide(self):
         with tempfile.TemporaryDirectory() as directory:
             (Path(directory) / '2025-01-01.html').write_text('<div class="news-item"><a href="https://a/1">x</a></div>')

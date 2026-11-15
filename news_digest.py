@@ -7,6 +7,7 @@
 
 import sys
 import io
+import socket
 import feedparser
 import os
 import re
@@ -24,15 +25,12 @@ from platform_news import collect as collect_platforms, PLATFORMS
 from news_history import load_history, select_news, save_history
 from studio_brand import studio_brand_html
 
-# 修复 Windows 控制台编码问题
-if sys.platform == "win32":
-    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
-
 # ============= 新闻源配置 =============
 
 BEIJING_TZ = timezone(timedelta(hours=8))
 ECONOMY_CATEGORY = '经济与市场'
+FEED_USER_AGENT = 'VisionDaily/1.0 (+https://github.com/YZ2020CHINA/visual-novel-news-digest)'
+FEED_TIMEOUT_SECONDS = 20
 
 NEWS_SOURCES = {
     '社会事件': [
@@ -40,6 +38,8 @@ NEWS_SOURCES = {
         'https://www.bbc.com/zhongwen/simp/index.xml',
         'https://www.bloomberg.com/feeds/businessweek/news.rss',  # Bloomberg Businessweek
         'https://www.bloomberg.com/feeds/politics/news.rss',  # Bloomberg Politics
+        'https://www.theguardian.com/world/rss',
+        'https://feeds.bbci.co.uk/news/world/rss.xml',
     ],
 
     ECONOMY_CATEGORY: [
@@ -66,6 +66,9 @@ NEWS_SOURCES = {
         'https://www.creativebloq.com/feed',
         'https://variety.com/v/film/feed/',
         'https://www.theguardian.com/film/rss',
+        'https://www.theguardian.com/books/rss',
+        'https://www.theguardian.com/artanddesign/rss',
+        'https://feeds.bbci.co.uk/news/entertainment_and_arts/rss.xml',
     ],
 
     '独立游戏与视觉小说': [
@@ -82,9 +85,18 @@ NEWS_SOURCES = {
         'https://www.csmonitor.com/feeds/all',
         'https://aeon.co/feed.rss',
         'https://philosophynow.org/rss',
+        'https://www.theguardian.com/world/religion/rss',
+        'https://www.vaticannews.va/zh.rss.xml',
+        'https://www.npr.org/rss/rss.php?id=1016',
+        'https://www.bitterwinter.org/feed/',  # 寒冬
     ],
 }
 
+
+# 修复 Windows 控制台编码问题
+if sys.platform == "win32":
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
 
 # ============= 工具函数 =============
 
@@ -178,6 +190,7 @@ def fetch_news(candidate_limit=5, extract_images=True):
     """抓取所有新闻源；经济新闻按最近24小时筛选并按链接去重。"""
     all_news = {}
     now = datetime.now(BEIJING_TZ)
+    socket.setdefaulttimeout(FEED_TIMEOUT_SECONDS)
 
     for category, feeds in NEWS_SOURCES.items():
         category_news = []
@@ -185,7 +198,14 @@ def fetch_news(candidate_limit=5, extract_images=True):
 
         for feed_url in feeds:
             try:
-                feed = feedparser.parse(feed_url)
+                feed = feedparser.parse(feed_url, agent=FEED_USER_AGENT)
+                status = feed.get('status')
+                if status and int(status) >= 400:
+                    print(f"✗ {category}: {feed_url}（HTTP {status}）")
+                    continue
+                if not feed.entries:
+                    print(f"⚠ {category}: {feed_url}（无条目）")
+                    continue
                 accepted = 0
                 for entry in feed.entries:
                     if category == ECONOMY_CATEGORY:
@@ -356,6 +376,16 @@ def translate_and_select_top_news(all_news):
     }
 
 
+def empty_category_message(category, platform_status=None):
+    """Return the notice shown for a category with no unpublished items."""
+    message = (platform_status or {}).get(category)
+    if message and message != '正常':
+        return message
+    if category in PLATFORMS:
+        return '最近24小时暂无未刊登的新帖'
+    return '最近暂无未刊登的新内容'
+
+
 def generate_html(all_news, ai_result, platform_status=None):
     """生成复古报纸风格的 HTML（使用中文翻译）"""
     today = datetime.now(BEIJING_TZ)
@@ -384,9 +414,6 @@ def generate_html(all_news, ai_result, platform_status=None):
     top_story_html = '<div class="top-story-index"><h2>今日要闻</h2><div class="index-grid">'
 
     for category, items in all_news.items():
-        if not items:
-            continue
-
         # 板块锚点ID（用于跳转）
         category_id = category.replace(' ', '-').replace('与', '-')
 
@@ -405,6 +432,9 @@ def generate_html(all_news, ai_result, platform_status=None):
 
             top_3_titles.append(f'<li>{escape(title_cn[:50])}</li>')
 
+        if not items:
+            top_3_titles.append(f'<li>{escape(empty_category_message(category, platform_status))}</li>')
+
         top_story_html += f'''
         <div class="index-section">
             <h3><a href="#{escape(category_id, quote=True)}">{escape(category)}</a></h3>
@@ -421,12 +451,9 @@ def generate_html(all_news, ai_result, platform_status=None):
     converted_images = {}
     for category, items in all_news.items():
         if not items:
-            if platform_status and category in platform_status:
-                category_id = category.replace(' ', '-').replace('与', '-')
-                message = platform_status[category]
-                if message == '正常':
-                    message = '最近24小时暂无未刊登的新帖'
-                sections_html += f'<div class="section" id="{escape(category_id)}"><h3 class="section-title">{escape(category)}</h3><p>{escape(message)}</p></div>'
+            category_id = category.replace(' ', '-').replace('与', '-')
+            message = empty_category_message(category, platform_status)
+            sections_html += f'<div class="section" id="{escape(category_id, quote=True)}"><h3 class="section-title">{escape(category)}</h3><p>{escape(message)}</p></div>'
             continue
 
         # 板块锚点ID
@@ -517,7 +544,7 @@ def main():
         print("[NEWS] 正在抓取新闻...")
         now = datetime.now(BEIJING_TZ)
         output_dir = Path(__file__).parent / 'digests'
-        history = load_history(output_dir, now)
+        history = load_history(output_dir, now, exclude_today=True)
         platform_news, platform_status = collect_platforms(now)
         # Reserve platform sections first; suppress duplicate linked articles in RSS sections.
         candidates = {**platform_news, **fetch_news(candidate_limit=50, extract_images=False)}

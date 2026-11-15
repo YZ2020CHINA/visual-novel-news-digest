@@ -1,4 +1,5 @@
 """News freshness, section rendering, and Beijing dates at the UTC boundary."""
+import io
 import tempfile
 import unittest
 from datetime import datetime, timedelta, timezone
@@ -101,6 +102,32 @@ class NewsSourcesTests(unittest.TestCase):
         self.assertNotIn('社会与文化', soup.get_text())
         for link in soup.select('.index-section h3 a'):
             self.assertIsNotNone(soup.find(id=link['href'][1:]))
+
+    def test_empty_category_keeps_section_and_index_entry(self):
+        news = {category: [] for category in news_digest.NEWS_SOURCES}
+        status = {'Telegram 热门': '频道暂时不可用'}
+        soup = BeautifulSoup(news_digest.generate_html(news, None, status), 'html.parser')
+        titles = [h.get_text() for h in soup.select('.section-title')]
+        self.assertEqual(titles, list(news_digest.NEWS_SOURCES))
+        self.assertEqual([a.get_text() for a in soup.select('.index-section h3 a')], titles)
+        for link in soup.select('.index-section h3 a'):
+            self.assertIsNotNone(soup.find(id=link['href'][1:]))
+        self.assertIn('最近暂无未刊登的新内容', soup.get_text())
+        self.assertIn('频道暂时不可用', soup.get_text())
+
+    def test_failed_or_empty_feed_is_logged_without_crashing(self):
+        sources = {'文化艺术': ['https://broken.example/feed', 'https://empty.example/feed']}
+        with patch.dict(news_digest.NEWS_SOURCES, sources, clear=True), \
+                patch.object(news_digest.feedparser, 'parse', side_effect=[
+                    FeedParserDict(status=404, entries=[]),
+                    FeedParserDict(status=200, entries=[]),
+                ]) as parse, \
+                patch('sys.stdout', new_callable=io.StringIO) as output:
+            result = news_digest.fetch_news()
+        self.assertEqual(result['文化艺术'], [])
+        self.assertEqual([call.args[0] for call in parse.call_args_list], list(sources['文化艺术']))
+        self.assertIn('HTTP 404', output.getvalue())
+        self.assertIn('无条目', output.getvalue())
 
     def test_early_morning_edition_uses_beijing_date_for_header_and_archive(self):
         # On the UTC runner it is still Nov 6; the Beijing edition must be Nov 7.

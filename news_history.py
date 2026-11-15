@@ -31,10 +31,15 @@ def keys(item):
     return result
 
 
-def load_history(directory, now, days=30):
+def load_history(directory, now, days=30, exclude_today=False):
+    """Collect keys of items printed in the last `days` days.
+
+    With exclude_today=True the current day's own edition is ignored, so rebuilding
+    today's edition starts from the same pool as the first run instead of a shrunken one.
+    """
     seen = set()
     directory = Path(directory)
-    for offset in range(days + 1):
+    for offset in range(1 if exclude_today else 0, days + 1):
         date = (now.date() - timedelta(days=offset)).isoformat()
         record = directory / f'{date}.news.json'
         if record.exists():
