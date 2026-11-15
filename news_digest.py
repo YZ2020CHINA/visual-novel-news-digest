@@ -40,6 +40,7 @@ NEWS_SOURCES = {
         'https://www.bloomberg.com/feeds/politics/news.rss',  # Bloomberg Politics
         'https://www.theguardian.com/world/rss',
         'https://feeds.bbci.co.uk/news/world/rss.xml',
+        'https://chinadigitaltimes.net/chinese/feed',  # 中国数字时代
     ],
 
     ECONOMY_CATEGORY: [

@@ -119,7 +119,7 @@ python -m unittest test_newsprint -v
 
 ## 📰 新闻源
 
-- **社会事件**: 纽约时报中文网, BBC 中文, [Bloomberg Businessweek](https://www.bloomberg.com/businessweek)、Bloomberg Politics（官方 RSS）
+- **社会事件**: 纽约时报中文网, BBC 中文, [Bloomberg Businessweek](https://www.bloomberg.com/businessweek)、Bloomberg Politics（官方 RSS）、[中国数字时代](https://cdt.media/)（China Digital Times 中文 RSS）
 - **经济与市场**: BBC Business、CNBC Economy、CNBC Markets、The Guardian Economics、Bloomberg Markets、Bloomberg Economics，涵盖全球宏观经济、央行政策与金融市场
 - **AI 与科技**: MIT Tech Review, TechCrunch, The Verge, [Simon Willison](https://simonwillison.net/atom/everything/), AI News, Bloomberg Technology
 - **文化艺术**: ArtNews, Hyperallergic, Creative Bloq，以及 Variety Film、The Guardian Film、The Guardian Books、The Guardian Art & Design、BBC Entertainment & Arts

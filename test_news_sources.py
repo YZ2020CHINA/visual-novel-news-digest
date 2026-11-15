@@ -65,6 +65,10 @@ class NewsSourcesTests(unittest.TestCase):
                 patch.object(news_digest, 'extract_image_from_url', return_value='photo'):
             self.assertEqual(news_digest.fetch_news()['文化艺术'][0]['title'], 'film')
 
+    def test_china_digital_times_feed_is_in_society_category(self):
+        self.assertIn('https://chinadigitaltimes.net/chinese/feed',
+                      news_digest.NEWS_SOURCES['社会事件'])
+
     def test_new_game_feeds_collect_five_valid_articles_each_and_render_links(self):
         category = '独立游戏与视觉小说'
         new_feeds = ['https://www.gcores.com/rss',
