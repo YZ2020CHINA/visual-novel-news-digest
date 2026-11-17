@@ -13,6 +13,10 @@ concurrency:
 on:
   schedule:
     - cron: '12 20 * * *'  # 每天 UTC 20:12（次日北京时间 04:12）
+    # GitHub 高峰期会延迟或丢弃定时任务；以下为备用时间，当天已出刊则自动跳过。
+    - cron: '42 22 * * *'  # 北京时间 06:42
+    - cron: '12 1 * * *'   # 北京时间 09:12
+    - cron: '12 3 * * *'   # 北京时间 11:12
   workflow_dispatch:  # 允许手动触发
 
 jobs:
@@ -27,19 +31,31 @@ jobs:
           ref: ${{ github.ref_name }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: 检查今天是否已出刊
+        id: guard
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ] && [ -f "digests/$(date +%F).html" ]; then
+            echo "今天的日报已生成，跳过备用定时任务"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: 设置 Python
+        if: steps.guard.outputs.skip != 'true'
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
       - name: 安装依赖
+        if: steps.guard.outputs.skip != 'true'
         run: |
           pip install -r requirements.txt
 
       - name: 测试照片效果、排版、新闻来源和最新一期入口
+        if: steps.guard.outputs.skip != 'true'
         run: python -m unittest test_newsprint test_latest_digest test_layout test_news_sources test_platform_news test_news_history test_newsletter -v
 
       - name: 生成视野日报
+        if: steps.guard.outputs.skip != 'true'
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL }}
@@ -48,6 +64,7 @@ jobs:
           python news_digest.py
 
       - name: 提交生成的报纸
+        if: steps.guard.outputs.skip != 'true'
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
@@ -60,6 +77,7 @@ jobs:
           fi
 
       - name: 发送邮件订阅
+        if: steps.guard.outputs.skip != 'true'
         env:
           BUTTONDOWN_API_KEY: ${{ secrets.BUTTONDOWN_API_KEY }}
         run: python newsletter.py send
