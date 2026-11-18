@@ -20,6 +20,8 @@ for stream in (sys.stdout, sys.stderr):
         stream.reconfigure(encoding='utf-8', errors='replace')
 
 API_URL = 'https://api.buttondown.com/v1/emails'
+BEIJING_TZ = timezone(timedelta(hours=8))
+DELIVERY_HOUR = 8
 CONFIG_PATH = Path(__file__).parent / 'newsletter.json'
 LEGACY_BAR = re.compile(r'\s*<div class="subscribe-bar".*?</div></div>', re.S)
 CORNER_MARKER = 'class="subscribe-corner"'
@@ -130,8 +132,8 @@ def build_email(html, date_iso, config=None):
     return subject, '\n'.join(parts)
 
 
-def send_edition(path, api_key=None, config=None, session=requests):
-    """Send one saved edition. Returns 'sent', 'duplicate' or 'skipped'."""
+def send_edition(path, api_key=None, config=None, session=requests, *, schedule=False, now=None):
+    """Submit an edition immediately, or reserve 08:00 Beijing time if still in the future."""
     api_key = api_key if api_key is not None else os.environ.get('BUTTONDOWN_API_KEY', '')
     if not api_key:
         print('[MAIL] 未配置 BUTTONDOWN_API_KEY，跳过邮件发送')
@@ -141,23 +143,34 @@ def send_edition(path, api_key=None, config=None, session=requests):
     if not re.fullmatch(r'\d{4}-\d{2}-\d{2}', date_iso):
         raise ValueError(f'不是日期命名的日报文件: {path.name}')
     subject, body = build_email(path.read_text(encoding='utf-8'), date_iso, config)
+    payload = {'subject': subject, 'body': body, 'slug': f'daily-{date_iso}', 'status': 'about_to_send'}
+    if schedule:
+        now = (now or datetime.now(BEIJING_TZ)).astimezone(BEIJING_TZ)
+        if date_iso != now.date().isoformat():
+            raise ValueError('自动推送仅接受北京时间当天的日报')
+        delivery = now.replace(hour=DELIVERY_HOUR, minute=0, second=0, microsecond=0)
+        if delivery > now:
+            payload.update(status='scheduled', publish_date=delivery.astimezone(timezone.utc).isoformat())
     response = session.post(
         API_URL,
         headers={'Authorization': f'Token {api_key}', 'X-Buttondown-Live-Dangerously': 'true'},
-        json={'subject': subject, 'body': body, 'slug': f'daily-{date_iso}', 'status': 'about_to_send'},
+        json=payload,
         timeout=30,
     )
     if response.status_code == 409:
-        print(f'[MAIL] {date_iso} 已发送过，跳过')
+        print(f'[MAIL] {date_iso} 已预约或已发送，跳过')
         return 'duplicate'
     response.raise_for_status()
+    if payload['status'] == 'scheduled':
+        print(f'[MAIL] 已预约北京时间 {date_iso} {DELIVERY_HOUR:02d}:00 发送: {subject}')
+        return 'scheduled'
     print(f'[MAIL] 已提交发送: {subject}')
     return 'sent'
 
 
 def todays_edition(directory, now=None):
     """Today's (Beijing time) edition, or None so a failed run never re-sends an old issue."""
-    now = now or datetime.now(timezone(timedelta(hours=8)))
+    now = (now or datetime.now(BEIJING_TZ)).astimezone(BEIJING_TZ)
     path = Path(directory) / f'{now.date().isoformat()}.html'
     return path if path.exists() else None
 
@@ -182,10 +195,18 @@ def main(argv):
             print('[MAIL] 今天没有新生成的日报，不发送邮件')
             return 0
         send_edition(target)
+    elif command == 'schedule' and len(argv) == 2:
+        now = datetime.now(BEIJING_TZ)
+        target = todays_edition(digests, now)
+        if target is None:
+            print('[MAIL] 今天没有新生成的日报，不安排发送')
+            return 1
+        if send_edition(target, schedule=True, now=now) == 'skipped':
+            return 1
     elif command == 'backfill':
         print('已更新:', ', '.join(backfill(digests)) or '无')
     else:
-        print('用法: python newsletter.py [send [文件] | backfill]')
+        print('用法: python newsletter.py [schedule | send [文件] | backfill]')
         return 2
     return 0
 

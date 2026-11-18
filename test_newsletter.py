@@ -3,7 +3,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 import tempfile
 import unittest
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 import newsletter
 
@@ -42,7 +42,9 @@ class NewsletterTests(unittest.TestCase):
             newsletter.build_email('<html></html>', '2026-11-12', CONFIG)
 
     def _edition_file(self):
-        path = Path(tempfile.mkdtemp()) / '2026-11-12.html'
+        folder = tempfile.TemporaryDirectory()
+        self.addCleanup(folder.cleanup)
+        path = Path(folder.name) / '2026-11-12.html'
         path.write_text(EDITION, encoding='utf-8')
         return path
 
@@ -55,6 +57,55 @@ class NewsletterTests(unittest.TestCase):
         self.assertEqual(kwargs['headers'], {'Authorization': 'Token secret', 'X-Buttondown-Live-Dangerously': 'true'})
         self.assertEqual(kwargs['json']['slug'], 'daily-2026-11-12')
         self.assertEqual(kwargs['json']['status'], 'about_to_send')
+
+    def test_early_edition_schedules_0800_beijing_even_if_now_is_utc_yesterday(self):
+        session = MagicMock()
+        session.post.return_value.status_code = 201
+        now = datetime(2026, 11, 11, 20, 12, tzinfo=timezone.utc)
+        result = newsletter.send_edition(self._edition_file(), 'k', CONFIG, session, schedule=True, now=now)
+        payload = session.post.call_args.kwargs['json']
+        self.assertEqual(result, 'scheduled')
+        self.assertEqual(payload['slug'], 'daily-2026-11-12')
+        self.assertEqual(payload['status'], 'scheduled')
+        self.assertEqual(payload['publish_date'], '2026-11-12T00:00:00+00:00')
+
+    def test_due_or_late_edition_is_queued_for_immediate_delivery(self):
+        session = MagicMock()
+        session.post.return_value.status_code = 201
+        for hour in (8, 11):
+            with self.subTest(hour=hour):
+                now = datetime(2026, 11, 12, hour, tzinfo=newsletter.BEIJING_TZ)
+                result = newsletter.send_edition(self._edition_file(), 'k', CONFIG, session, schedule=True, now=now)
+                payload = session.post.call_args.kwargs['json']
+                self.assertEqual(result, 'sent')
+                self.assertEqual(payload['status'], 'about_to_send')
+                self.assertNotIn('publish_date', payload)
+
+    def test_schedule_rejects_a_stale_edition_without_sending(self):
+        session = MagicMock()
+        now = datetime(2026, 11, 13, 4, tzinfo=newsletter.BEIJING_TZ)
+        with self.assertRaisesRegex(ValueError, '当天'):
+            newsletter.send_edition(self._edition_file(), 'k', CONFIG, session, schedule=True, now=now)
+        session.post.assert_not_called()
+
+    def test_duplicate_schedule_and_late_retry_use_the_same_slug(self):
+        session = MagicMock()
+        session.post.return_value.status_code = 409
+        path = self._edition_file()
+        for hour in (4, 11):
+            now = datetime(2026, 11, 12, hour, tzinfo=newsletter.BEIJING_TZ)
+            self.assertEqual(newsletter.send_edition(path, 'k', CONFIG, session, schedule=True, now=now), 'duplicate')
+        self.assertEqual([call.kwargs['json']['slug'] for call in session.post.call_args_list], ['daily-2026-11-12'] * 2)
+
+    def test_automatic_cli_reports_missing_edition_or_key(self):
+        with patch('newsletter.todays_edition', return_value=None), patch('newsletter.send_edition') as send:
+            self.assertEqual(newsletter.main(['newsletter.py', 'schedule']), 1)
+            send.assert_not_called()
+        path = self._edition_file()
+        with patch('newsletter.todays_edition', return_value=path), patch('newsletter.send_edition', return_value='skipped') as send:
+            self.assertEqual(newsletter.main(['newsletter.py', 'schedule']), 1)
+            self.assertEqual(send.call_args.args, (path,))
+            self.assertTrue(send.call_args.kwargs['schedule'])
 
     def test_missing_key_skips_without_network(self):
         session = MagicMock()
@@ -91,7 +142,10 @@ class NewsletterTests(unittest.TestCase):
         self.assertNotIn('{{SUBSCRIBE}}', (root / 'templates/newspaper.html').read_text(encoding='utf-8'))
         workflow = (root / '.github/workflows/daily-news.yml').read_text(encoding='utf-8')
         self.assertIn('BUTTONDOWN_API_KEY', workflow)
-        self.assertGreater(workflow.index('python newsletter.py send'), workflow.index('git push'))
+        self.assertGreater(workflow.index('python newsletter.py schedule'), workflow.index('git push'))
+        delivery = workflow.split('- name: 预约 08:00 邮件推送或当天补发', 1)[1]
+        self.assertNotIn('steps.guard.outputs.skip', delivery)
+        self.assertIn('github.event.repository.default_branch', delivery)
         readme = (root / 'README.md').read_text(encoding='utf-8')
         self.assertIn(newsletter.subscribe_url(), readme)
 
