@@ -157,9 +157,25 @@ def send_edition(path, api_key=None, config=None, session=requests, *, schedule=
         json=payload,
         timeout=30,
     )
-    if response.status_code == 409:
-        print(f'[MAIL] {date_iso} 已预约或已发送，跳过')
-        return 'duplicate'
+    # Buttondown may return 409 or a 400 with a structured duplicate/slug error
+    # when a retry races with (or follows) the first successful submission.
+    # Treat that case as success: the idempotent daily slug already owns the send.
+    if response.status_code in (400, 409):
+        try:
+            error = response.json()
+        except (ValueError, AttributeError):
+            error = {}
+        code = str(error.get('code') or error.get('error') or '').lower()
+        detail = str(error.get('detail') or error.get('message') or '').lower()
+        duplicate_error = code in {'email_duplicate', 'slug_invalid', 'already_exists'}
+        duplicate_error = duplicate_error or 'already' in detail and ('slug' in detail or 'email' in detail)
+        if response.status_code == 409 or duplicate_error:
+            print(f'[MAIL] {date_iso} 已预约或已发送，跳过（Buttondown {response.status_code}: {code or detail or "duplicate"}）')
+            return 'duplicate'
+        # Keep the API's structured reason in the Actions log. This makes a
+        # future configuration or validation failure diagnosable without
+        # exposing the API key.
+        print(f'[MAIL] Buttondown rejected {date_iso}: {code or detail or response.text[:500]}')
     response.raise_for_status()
     if payload['status'] == 'scheduled':
         print(f'[MAIL] 已预约北京时间 {date_iso} {DELIVERY_HOUR:02d}:00 发送: {subject}')

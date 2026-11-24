@@ -97,6 +97,17 @@ class NewsletterTests(unittest.TestCase):
             self.assertEqual(newsletter.send_edition(path, 'k', CONFIG, session, schedule=True, now=now), 'duplicate')
         self.assertEqual([call.kwargs['json']['slug'] for call in session.post.call_args_list], ['daily-2026-11-12'] * 2)
 
+    def test_buttondown_duplicate_400_is_idempotent(self):
+        session = MagicMock()
+        response = MagicMock(status_code=400)
+        response.json.return_value = {'code': 'email_duplicate', 'detail': 'slug already exists'}
+        session.post.return_value = response
+        self.assertEqual(
+            newsletter.send_edition(self._edition_file(), 'k', CONFIG, session, schedule=True,
+                                    now=datetime(2026, 11, 12, 4, tzinfo=newsletter.BEIJING_TZ)),
+            'duplicate',
+        )
+
     def test_automatic_cli_reports_missing_edition_or_key(self):
         with patch('newsletter.todays_edition', return_value=None), patch('newsletter.send_edition') as send:
             self.assertEqual(newsletter.main(['newsletter.py', 'schedule']), 1)
