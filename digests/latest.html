@@ -383,7 +383,67 @@ body {
     }
 }
 
-    </style>
+    .history-on-this-day {
+    background: #fff;
+    border: 2px solid #2b2b2b;
+    padding: 25px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.history-on-this-day h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #1a1a1a;
+}
+
+.history-event h4 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #2b2b2b;
+}
+
+.history-story {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #444;
+    text-align: justify;
+}
+
+.history-event {
+    text-align: left;
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid #ddd;
+    overflow-wrap: anywhere;
+}
+
+.history-topic {
+    display: inline-block;
+    margin-left: 12px;
+    font-size: 0.85rem;
+    font-weight: 400;
+}
+
+.history-intro, .history-note, .history-empty {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: #555;
+}
+
+.history-note, .history-source {
+    margin-top: 12px;
+}
+
+.history-source, .history-source a {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: #444;
+}
+
+
+</style>
 </head>
 <body>
     <div class="newspaper">
@@ -1980,14 +2040,16 @@ body {
             </div></div><p class="source-status">平台采集状态 · Telegram 热门：正常；X 热门：正常；Hacker News 热门：正常</p>
         </main>
 
-        <!-- 版尾 - 名人生日 -->
+        <!-- 版尾 - 历史上的今天 -->
         <footer class="newspaper-footer">
             <div class="ornament-divider"></div>
-            <div class="celebrity-birthday">
-                <h3>📅 今日诞辰</h3>
-                <p class="celebrity-name">未知名人</p>
-                <p class="celebrity-story">今天没有找到特别的名人生日记录。</p>
-            </div>
+            <section class="history-on-this-day" aria-labelledby="history-heading">
+                <h3 id="history-heading">📅 历史上的今天</h3>
+                <p class="history-intro">回望同月同日：关爱与福利、科技医疗教育、正义与人权、自由平等博爱，以及文化艺术与文明。</p>
+<article class="history-event"><h4><time datetime="1949-11-26">1949年11月26日</time><span class="history-topic">自由、平等与人权</span></h4><p class="history-story">印度制宪会议通过宪法，将正义、自由、平等与博爱写入宪法序言。通过宪法与正式施行是不同节点：宪法主要条款于1950年1月26日生效。</p><p class="history-source">来源：<a href="https://www.mygov.in/campaigns/read-preamble" target="_blank" rel="noopener noreferrer">印度政府 MyGov·宪法序言与宪法日 →</a></p></article>
+<article class="history-event"><h4><time datetime="1942-11-26">1942年11月26日</time><span class="history-topic">文化艺术与文明</span></h4><p class="history-story">电影《卡萨布兰卡》在纽约首次上映。影片以战争中的爱情、难民处境与个人抉择为线索，呈现对自由的向往与反法西斯立场。</p><p class="history-source">来源：<a href="https://www.loc.gov/item/today-in-history/november-26/" target="_blank" rel="noopener noreferrer">美国国会图书馆·11月26日历史 →</a></p></article>
+<article class="history-event"><h4><time datetime="1842-11-26">1842年11月26日</time><span class="history-topic">教育与知识普及</span></h4><p class="history-story">爱德华·索林与同伴在美国印第安纳州创建圣母大学，开始建设这所高等教育机构。这是大学创办的历史节点，并不意味着当时已经实现教育机会平等。</p><p class="history-source">来源：<a href="https://www.nd.edu/about/history/" target="_blank" rel="noopener noreferrer">圣母大学·校史 →</a></p></article>
+            </section>
             <div class="footer-note">
                 <p>视野日报 · 由 AI 自动生成 · 每日更新</p>
             </div>
