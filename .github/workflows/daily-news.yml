@@ -61,7 +61,7 @@ jobs:
 
       - name: 测试照片效果、排版、新闻来源和最新一期入口
         if: steps.guard.outputs.skip != 'true'
-        run: python -m unittest test_newsprint test_latest_digest test_layout test_news_sources test_platform_news test_news_history test_newsletter -v
+        run: python -m unittest test_newsprint test_latest_digest test_layout test_news_sources test_platform_news test_news_history test_newsletter test_on_this_day -v
 
       - name: 生成视野日报
         if: steps.guard.outputs.skip != 'true'

@@ -32,14 +32,14 @@
             {{SECTIONS}}
         </main>
 
-        <!-- 版尾 - 名人生日 -->
+        <!-- 版尾 - 历史上的今天 -->
         <footer class="newspaper-footer">
             <div class="ornament-divider"></div>
-            <div class="celebrity-birthday">
-                <h3>📅 今日诞辰</h3>
-                <p class="celebrity-name">{{CELEBRITY_NAME}}</p>
-                <p class="celebrity-story">{{CELEBRITY_STORY}}</p>
-            </div>
+            <section class="history-on-this-day" aria-labelledby="history-heading">
+                <h3 id="history-heading">📅 历史上的今天</h3>
+                <p class="history-intro">回望同月同日：关爱与福利、科技医疗教育、正义与人权、自由平等博爱，以及文化艺术与文明。</p>
+                {{HISTORY_EVENTS}}
+            </section>
             <div class="footer-note">
                 <p>视野日报 · 由 AI 自动生成 · 每日更新</p>
             </div>

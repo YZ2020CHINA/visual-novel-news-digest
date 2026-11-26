@@ -5,6 +5,7 @@ on:
     paths:
       - '**.py'
       - 'platform_sources.json'
+      - 'on_this_day_events.json'
       - 'templates/**'
       - 'static/**'
       - 'requirements.txt'
@@ -23,4 +24,4 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install -r requirements.txt
-      - run: python -m unittest test_newsprint test_latest_digest test_layout test_news_sources test_platform_news test_news_history test_newsletter -v
+      - run: python -m unittest test_newsprint test_latest_digest test_layout test_news_sources test_platform_news test_news_history test_newsletter test_on_this_day -v

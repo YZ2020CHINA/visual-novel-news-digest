@@ -1,0 +1,79 @@
+[
+  {
+    "month": 11,
+    "day": 26,
+    "year": 1949,
+    "topic": "自由、平等与人权",
+    "summary": "印度制宪会议通过宪法，将正义、自由、平等与博爱写入宪法序言。通过宪法与正式施行是不同节点：宪法主要条款于1950年1月26日生效。",
+    "source_name": "印度政府 MyGov·宪法序言与宪法日",
+    "source_url": "https://www.mygov.in/campaigns/read-preamble",
+    "match_terms": [
+      "宪法",
+      "制宪"
+    ]
+  },
+  {
+    "month": 11,
+    "day": 26,
+    "year": 1942,
+    "topic": "文化艺术与文明",
+    "summary": "电影《卡萨布兰卡》在纽约首次上映。影片以战争中的爱情、难民处境与个人抉择为线索，呈现对自由的向往与反法西斯立场。",
+    "source_name": "美国国会图书馆·11月26日历史",
+    "source_url": "https://www.loc.gov/item/today-in-history/november-26/",
+    "match_terms": [
+      "卡萨布兰卡",
+      "北非谍影"
+    ]
+  },
+  {
+    "month": 11,
+    "day": 26,
+    "year": 1842,
+    "topic": "教育与知识普及",
+    "summary": "爱德华·索林与同伴在美国印第安纳州创建圣母大学，开始建设这所高等教育机构。这是大学创办的历史节点，并不意味着当时已经实现教育机会平等。",
+    "source_name": "圣母大学·校史",
+    "source_url": "https://www.nd.edu/about/history/",
+    "match_terms": [
+      "圣母大学"
+    ]
+  },
+  {
+    "month": 11,
+    "day": 20,
+    "year": 1945,
+    "topic": "正义、审判与追责",
+    "summary": "纽伦堡国际军事法庭开始审理纳粹德国主要战犯案件，追究战争罪、反人类罪等责任。这一天是审判开庭日期，不能与后来的定罪和判决日期混同。",
+    "source_name": "美国大屠杀纪念馆·纽伦堡国际军事法庭",
+    "source_url": "https://encyclopedia.ushmm.org/content/en/article/international-military-tribunal-at-nuremberg",
+    "match_terms": [
+      "纽伦堡",
+      "紐倫堡"
+    ]
+  },
+  {
+    "month": 11,
+    "day": 20,
+    "year": 1989,
+    "topic": "关爱与社会福利",
+    "summary": "联合国大会通过《儿童权利公约》，确认儿童享有健康、教育、保护与参与等权利，并要求不因儿童及其父母的身份而歧视。公约于1990年9月2日生效。",
+    "source_name": "联合国儿童基金会·公约全文",
+    "source_url": "https://www.unicef.org/child-rights-convention/convention-text",
+    "match_terms": [
+      "儿童权利",
+      "兒童權利"
+    ]
+  },
+  {
+    "month": 12,
+    "day": 10,
+    "year": 1948,
+    "topic": "自由、平等与人权",
+    "summary": "联合国大会在巴黎通过《世界人权宣言》，提出人人在尊严和权利上一律平等，确认基本自由及教育、社会保障等权利。它是宣言，不能与后来具有条约性质的人权公约混同。",
+    "source_name": "联合国·世界人权宣言",
+    "source_url": "https://www.un.org/en/about-us/universal-declaration-of-human-rights/",
+    "match_terms": [
+      "世界人权宣言",
+      "世界人權宣言"
+    ]
+  }
+]

@@ -24,6 +24,7 @@ from pathlib import Path
 from platform_news import collect as collect_platforms, PLATFORMS
 from news_history import load_history, select_news, save_history
 from studio_brand import studio_brand_html
+from on_this_day import get_on_this_day, render_history
 
 # ============= 新闻源配置 =============
 
@@ -238,21 +239,6 @@ def fetch_news(candidate_limit=5, extract_images=True):
     return all_news
 
 
-def get_celebrity_birthday():
-    """获取今天生日的名人小故事"""
-    today = datetime.now(BEIJING_TZ)
-    month = today.month
-    day = today.day
-
-    # 这里简化处理，实际可以调用 API 或维护数据库
-    # 暂时用一个示例
-    celebrities = {
-        (11, 4): ("巴拉克·奥巴马（虚拟示例）", "美国第44任总统，首位非裔总统，以\"Yes We Can\"的口号激励了一代人。"),
-    }
-
-    return celebrities.get((month, day), ("未知名人", "今天没有找到特别的名人生日记录。"))
-
-
 def translate_and_select_top_news(all_news):
     """简化版：只选择头版新闻 + 翻译标题和摘要为中文"""
     # 尝试从 config.py 读取配置
@@ -387,13 +373,15 @@ def empty_category_message(category, platform_status=None):
     return '最近暂无未刊登的新内容'
 
 
-def generate_html(all_news, ai_result, platform_status=None):
+def generate_html(all_news, ai_result, platform_status=None, *, history_result=None, edition_time=None):
     """生成复古报纸风格的 HTML（使用中文翻译）"""
-    today = datetime.now(BEIJING_TZ)
+    today = edition_time or datetime.now(BEIJING_TZ)
     date_str = today.strftime('%Y年%m月%d日')
     issue_number = (today.date() - datetime(2026, 11, 1).date()).days + 1
 
-    celebrity_name, celebrity_story = get_celebrity_birthday()
+    # Fetching happens once in main(); rendering/tests remain independent of network access.
+    if history_result is None:
+        history_result = get_on_this_day(today, fetch_remote=False)
 
     # 读取 HTML 模板
     template_path = os.path.join(os.path.dirname(__file__), 'templates', 'newspaper.html')
@@ -509,15 +497,14 @@ def generate_html(all_news, ai_result, platform_status=None):
     html = html.replace('{{ISSUE_NUMBER}}', str(issue_number))
     html = html.replace('{{TOP_STORY}}', top_story_html)
     html = html.replace('{{SECTIONS}}', sections_html)
-    html = html.replace('{{CELEBRITY_NAME}}', celebrity_name)
-    html = html.replace('{{CELEBRITY_STORY}}', celebrity_story)
+    html = html.replace('{{HISTORY_EVENTS}}', render_history(history_result))
 
     return html
 
 
-def save_html(html_content):
+def save_html(html_content, *, edition_time=None):
     """保存 HTML 文件"""
-    today = datetime.now(BEIJING_TZ).strftime('%Y-%m-%d')
+    today = (edition_time or datetime.now(BEIJING_TZ)).strftime('%Y-%m-%d')
     output_dir = os.path.join(os.path.dirname(__file__), 'digests')
     os.makedirs(output_dir, exist_ok=True)
 
@@ -574,10 +561,13 @@ def main():
 
         # 3. 生成 HTML
         print("[HTML] 生成报纸页面...")
-        html_content = generate_html(all_news, ai_result, platform_status)
+        history_result = get_on_this_day(now)
+        print(f'[HISTORY] {history_result["date"]}：{len(history_result["events"])} 条，状态 {history_result["status"]}')
+        html_content = generate_html(all_news, ai_result, platform_status,
+                                     history_result=history_result, edition_time=now)
 
         # 4. 保存文件
-        saved_file = save_html(html_content)
+        saved_file = save_html(html_content, edition_time=now)
         save_history(output_dir, now, all_news)
 
         print("=" * 50)

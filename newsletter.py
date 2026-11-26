@@ -95,10 +95,24 @@ def parse_edition(html):
             })
         if title and items:
             sections.append({'title': title.get_text(strip=True), 'items': items[:MAX_ITEMS_PER_SECTION]})
+    history = []
+    history_section = soup.select_one('.history-on-this-day')
+    if history_section:
+        for event in history_section.select('.history-event'):
+            heading, story, source = (event.select_one(selector) for selector in ('h4', '.history-story', '.history-source a[href]'))
+            if heading and story:
+                history.append({'title': heading.get_text(' · ', strip=True),
+                                'summary': story.get_text(' ', strip=True),
+                                'source_name': source.get_text(' ', strip=True) if source else '',
+                                'link': safe_link(source['href']) if source else ''})
+    history_notices = history_section.select('.history-empty, .history-note') if history_section else []
     return {
         'date': date.get_text(strip=True) if date else '',
         'issue': issue.get_text(strip=True) if issue else '',
         'sections': sections,
+        'history': history,
+        'has_history': history_section is not None,
+        'history_notice': ' '.join(p.get_text(' ', strip=True) for p in history_notices),
     }
 
 
@@ -125,6 +139,20 @@ def build_email(html, date_iso, config=None):
             summary = f'<br>{escape(item["summary"])}' if item['summary'] else ''
             parts.append(f'<li><strong>{title}</strong>{summary}</li>')
         parts.append('</ul>')
+    if edition['has_history']:
+        parts.append('<h2>历史上的今天</h2>')
+        if edition['history']:
+            parts.append('<ul>')
+            for event in edition['history']:
+                source = ''
+                if event['link']:
+                    source = (f'<br>来源：<a href="{escape(event["link"], quote=True)}">'
+                              f'{escape(event["source_name"])}</a>')
+                parts.append(f'<li><strong>{escape(event["title"])}</strong>'
+                             f'<br>{escape(event["summary"])}{source}</li>')
+            parts.append('</ul>')
+        if edition['history_notice']:
+            parts.append(f'<p>{escape(edition["history_notice"])}</p>')
     parts.append(f'<p><a href="{url}">阅读完整一期 →</a></p>')
     subject = f'视野日报 · {edition["date"]}'
     if edition['issue']:
